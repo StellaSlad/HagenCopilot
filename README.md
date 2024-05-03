@@ -1,0 +1,1 @@
+![HagenCopilot](docs/img/hagencopilot.png)
