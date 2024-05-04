@@ -8,4 +8,5 @@ Frage: {input}
 Hilfreiche Antwort:
 """
 
-QA_CHAIN_PROMPT = PromptTemplate(input_variables=["context", "input"], template=template)
+QA_CHAIN_PROMPT = PromptTemplate(
+    input_variables=["context", "input"], template=template)
