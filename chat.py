@@ -1,25 +1,36 @@
+from langchain_community.embeddings import OllamaEmbeddings
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
-from langchain_community.embeddings.jina import JinaEmbeddings
 from langchain.vectorstores.milvus import Milvus
 from langchain_community.llms.ollama import Ollama
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+import os
+from dotenv import load_dotenv
+
 from prompt import QA_CHAIN_PROMPT
 
+# Load the .env file
+load_dotenv()
+
+model_url = os.getenv("FUH_VPN_URL")
+model = os.getenv("MODEL")
+
 llm = Ollama(
-    model="llama3",
+    base_url=model_url,
+    model="mixtral",
     callback_manager=CallbackManager(
         [StreamingStdOutCallbackHandler()]
     ),
-    stop=["<|eot_id|>"],
+    stop=["<|eot_id|>"]
 )
 
-embeddings = JinaEmbeddings(
-    jina_api_key="jina_f355babf70df438a9d36a6cd900b18cd5yNO44Bvk6FUXero10s_MIQ_godd", model_name="jina-embeddings-v2-base-de"
-)
 
-vector_store = Milvus(embedding_function=embeddings,
+ollama_emb = OllamaEmbeddings(
+    base_url=model_url,
+    model=model,
+)
+vector_store = Milvus(embedding_function=ollama_emb,
                       connection_args={
                           "host": "127.0.0.1",
                           "port": "19530",
@@ -30,7 +41,7 @@ vector_store = Milvus(embedding_function=embeddings,
                       )
 
 
-retriever = vector_store.as_retriever(search_kwargs={"fetch_k": 10})
+retriever = vector_store.as_retriever(search_kwargs={"k": 20})
 
 
 combine_docs_chain = create_stuff_documents_chain(
