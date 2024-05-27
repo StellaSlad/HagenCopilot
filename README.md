@@ -5,19 +5,10 @@
 pip install -r requirements.txt
 ```
 
-2. Start docker-compose
+2. Put pdf files in the `data` folder and start the backend to start the docker-compose and index the pdf-files. This will start the chat.py, too.
 ```bash
-docker-compose up
+python backend.py
 ```
 
-3. Put pdf files in the `data` folder and index them
-```bash
-python load_data.py
-```
-
-4. Start chatbot
-```bash
-python chatbot.py
-```
 
 
