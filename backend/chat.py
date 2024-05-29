@@ -8,7 +8,7 @@ from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 import os
 from dotenv import load_dotenv
 
-from prompt import QA_CHAIN_PROMPT
+from backend.prompt import QA_CHAIN_PROMPT
 
 # Load the .env file
 load_dotenv()
