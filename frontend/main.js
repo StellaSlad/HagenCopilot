@@ -21,8 +21,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
 
     const generateResponse = (chatElement) => {
-        //const API_URL = "http://localhost:5000/query";
-        const API_URL = "https://dummyjson.com/test";
+        const API_URL = "http://127.0.0.1:5000/query";
         const messageElement = chatElement.querySelector("p");
         const messageElementChild = document.createElement("span");
 
@@ -37,54 +36,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         // Send POST request to API, get response and set the reponse as paragraph text
         fetch(API_URL, requestOptions).then(res => res.json()).then(data => {
-            data = {
-                "response": {
-                    "answer": "Die semantische Heterogenität wird unterstellt, dass es sich um die Unterschiede in Bedeutung, Interpretation und Art der Nutzung von Informationen handelt. Es ist damit das größte Problem für die automatische Wissensverarbeitung.",
-                    "context": [
-                        {
-                            "metadata": {
-                                "page": 44,
-                                "pk": 450095517748168738,
-                                "source": "data/1877_KE7.pdf",
-                                "start_index": 0
-                            },
-                            "page_content": "9. Lösungen der Selbsttestaufgaben\n7.1 Was wird unter der semantischen Heterogenität verstanden?\nDie semantische Heterogenität die Unterschiede in Bedeutung, Interpretation und Art der\nNutzung, speziell von Informationen. Es ist damit das größte Problem für die\nautomatische Wissensverarbeitung.\n7.2 Nennen und erklären Sie die drei Konzepte der semantischen Heterogenität.\n·        Bei semantisch äquivalenten Konzepten  können sich etwa verschiedene Begriffe\nauf ein und dasselbe Konzept beziehen.\n·        Bei semantisch unabhängigen Konzepten  kann es zu Verständnisproblemen\nkommen, wenn der gleiche Begriff für unterschiedliche Konzepte verwendet wird.\n·        Bei semantisch abhängigen Konzepten  wird die Heterogenität anhand von\nGeneralisierung und Spezifizierung beschrieben.\n7.3 Erklären Sie den Begriff der Taxonomie.\nMit einer Taxonomie werden Mengen von Konzepten von kontrollierten Vokabularen\neines Themengebietes definiert und in eine hierarchische Beziehung gesetzt, um eine",
-                            "type": "Document"
-                        },
-                        {
-                            "metadata": {
-                                "page": 44,
-                                "pk": 450095517748170060,
-                                "source": "data/1877_KE7.pdf",
-                                "start_index": 0
-                            },
-                            "page_content": "9. Lösungen der Selbsttestaufgaben\n7.1 Was wird unter der semantischen Heterogenität verstanden?\nDie semantische Heterogenität die Unterschiede in Bedeutung, Interpretation und Art der\nNutzung, speziell von Informationen. Es ist damit das größte Problem für die\nautomatische Wissensverarbeitung.\n7.2 Nennen und erklären Sie die drei Konzepte der semantischen Heterogenität.\n·        Bei semantisch äquivalenten Konzepten  können sich etwa verschiedene Begriffe\nauf ein und dasselbe Konzept beziehen.\n·        Bei semantisch unabhängigen Konzepten  kann es zu Verständnisproblemen\nkommen, wenn der gleiche Begriff für unterschiedliche Konzepte verwendet wird.\n·        Bei semantisch abhängigen Konzepten  wird die Heterogenität anhand von\nGeneralisierung und Spezifizierung beschrieben.\n7.3 Erklären Sie den Begriff der Taxonomie.\nMit einer Taxonomie werden Mengen von Konzepten von kontrollierten Vokabularen\neines Themengebietes definiert und in eine hierarchische Beziehung gesetzt, um eine",
-                            "type": "Document"
-                        },
-                        {
-                            "metadata": {
-                                "page": 6,
-                                "pk": 450095517748168050,
-                                "source": "data/1877_KE5.pdf",
-                                "start_index": 1668
-                            },
-                            "page_content": "Heterogenitätsprobleme auf der strukturellen Ebene bereits ausdifferenzierte Lösungen\naus der Datenbank-Forschung. Sowohl die maschinelle Interpretation von Information als\nauch die Verarbeitung der Semantik befinden sich hingegen noch in einem frühen\nForschungsstadium. Deshalb soll im Folgenden vor allem dieser Aspekt besondereSelbsttestaufgabe 5.1\nWas ist ein Semantisches Netz und wozu wird es verwendet?",
-                            "type": "Document"
-                        },
-                        {
-                            "metadata": {
-                                "page": 6,
-                                "pk": 450095517748169372,
-                                "source": "data/1877_KE5.pdf",
-                                "start_index": 1668
-                            },
-                            "page_content": "Heterogenitätsprobleme auf der strukturellen Ebene bereits ausdifferenzierte Lösungen\naus der Datenbank-Forschung. Sowohl die maschinelle Interpretation von Information als\nauch die Verarbeitung der Semantik befinden sich hingegen noch in einem frühen\nForschungsstadium. Deshalb soll im Folgenden vor allem dieser Aspekt besondereSelbsttestaufgabe 5.1\nWas ist ein Semantisches Netz und wozu wird es verwendet?",
-                            "type": "Document"
-                        }
-                    ],
-                    "input": "Was wird unter der semantischen Heterogenität verstanden?"
-                }
-            }
 
             if (data.response?.context !== "undefined") {
                 messageElementChild.innerHTML = "<br/><br/><b>Quellenangabe:</b><br/>";
