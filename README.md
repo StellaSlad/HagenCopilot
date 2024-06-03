@@ -1,13 +1,27 @@
 ![HagenCopilot](docs/img/hagencopilot.png)
 
+Ensure to add a .env file, take a look at the .env-example file.
+
 1. Install requirements
 
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Put pdf files in the `data` folder and start the backend to start the docker-compose and index the pdf-files. This will start the chat.py, too.
+2. Start the docker-compose
 
 ```bash
-python backend.py
+docker-compose up -d
+```
+
+3. Put pdf files in the `data` folder and start the indexation of the files
+
+```bash
+python backend/load_data.py
+```
+
+4. Start the backend
+
+```bash
+python backend/api.py
 ```
