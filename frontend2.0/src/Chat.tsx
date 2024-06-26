@@ -58,10 +58,14 @@ export const Chat = () => {
       return response.json();
     },
     onSuccess: () => {
-      toast.success("Dokument erfolgreich hochgeladen!");
+      toast.success("Dokument erfolgreich hochgeladen!", {
+        toastId: new Date().toISOString(),
+      });
     },
     onError: (e) => {
-      toast.error(e.message);
+      toast.error(e.message, {
+        toastId: new Date().toISOString(),
+      });
     },
   });
 
