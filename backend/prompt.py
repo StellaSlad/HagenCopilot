@@ -2,8 +2,8 @@ from langchain_core.prompts import PromptTemplate
 
 
 prompt_template = """
-Beantworten Sie die Fragen des Benutzers auf der Grundlage des unten stehenden Kontexts in der deutschen Sprache. 
-Wenn der Kontext keine relevanten Informationen für die Frage enthält, denken Sie sich nichts aus und sagen Sie einfach „Ich weiß es nicht“:
+Beantworte die Fragen des Benutzers in der deutschen Sprache. Nutze nur die Informationen, die im Kontext gegeben sind.
+Wenn der Kontext keine relevanten Informationen für die Frage enthält, entschuldige dich und sage, dass du keine Antwort hast.
 
 Kontext: 
 {context}
