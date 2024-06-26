@@ -3,7 +3,7 @@ import "@nlux/themes/nova.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Chat } from "./chat";
+import { Chat } from "./Chat";
 
 const queryClient = new QueryClient();
 

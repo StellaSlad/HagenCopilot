@@ -47,17 +47,21 @@ export const Chat = () => {
         body: formData,
       });
 
+      if (response.status === 409) {
+        throw new Error("Dokument bereits vorhanden.");
+      }
+
       if (!response.ok) {
-        throw new Error("Failed to upload document");
+        throw new Error("Fehler beim Hochladen des Dokuments.");
       }
 
       return response.json();
     },
     onSuccess: () => {
-      toast.success("Document uploaded successfully!");
+      toast.success("Dokument erfolgreich hochgeladen!");
     },
-    onError: () => {
-      toast.error("Failed to upload document.");
+    onError: (e) => {
+      toast.error(e.message);
     },
   });
 

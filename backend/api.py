@@ -28,6 +28,7 @@ def query_handler():
 @app.route('/upload_document', methods=['POST'])
 @cross_origin()
 def upload_document():
+    print("fefee")
     if 'document' not in request.files:
         return jsonify({'error': 'No document part'}), 400
     file = request.files['document']
@@ -37,9 +38,14 @@ def upload_document():
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-
-        load_data_file(file_path)
-        return jsonify({'response': 'Document uploaded and indexed successfully'})
+        try:
+            load_data_file(file_path)
+            os.remove(file_path)  # Remove the file after processing
+            return jsonify({'response': 'Document uploaded and indexed successfully'})
+        except ValueError as e:
+            os.remove(file_path)  # Remove the file after processing
+            print(e)
+            return jsonify({'error': str(e)}), 409
 
 
 if __name__ == '__main__':
