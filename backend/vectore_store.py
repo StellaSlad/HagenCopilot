@@ -1,12 +1,7 @@
 from langchain.vectorstores.milvus import Milvus
-from langchain_community.embeddings import HuggingFaceBgeEmbeddings
 from pymilvus import connections, Collection
 
-embedding = HuggingFaceBgeEmbeddings(
-    model_name="intfloat/multilingual-e5-large",
-    model_kwargs={'device': 'cpu'},
-    encode_kwargs={'normalize_embeddings': True}
-)
+from embeddings import embeddings
 
 connection = {
     "host": "127.0.0.1",
@@ -17,7 +12,7 @@ connection = {
 }
 
 vector_store = Milvus(
-    embedding_function=embedding,
+    embedding_function=embeddings,
     connection_args=connection,
 )
 

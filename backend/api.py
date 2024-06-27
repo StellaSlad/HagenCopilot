@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from chat import invoke
@@ -5,10 +6,15 @@ import os
 from load_data import load_data_file
 from werkzeug.utils import secure_filename
 
+
+load_dotenv()
+
+DATA_DIR = os.getenv("DATA_DIR")
+
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-app.config['UPLOAD_FOLDER'] = 'data'
+app.config['UPLOAD_FOLDER'] = DATA_DIR
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 

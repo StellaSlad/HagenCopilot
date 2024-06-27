@@ -1,0 +1,130 @@
+[
+  {
+    "question": "Was ist Monitoring (nach Bates)?",
+    "answer": "Monitoring ist aktiver Aufbau von Hintergrundwissen zu Interessengebieten und möglichen zukünftigen Fragestellungen."
+  },
+  {
+    "question": "Wozu benötigt man eine Zeichenkodierung?",
+    "answer": "Die Textzeichen müssen in Bits und Bytes kodiert werden. Eine ZeichenCodierung gibt dazu eine Vorschrift an."
+  },
+  {
+    "question": "Welche Zeichenkodierung ist am bekanntesten?",
+    "answer": "US-ASCII"
+  },
+  {
+    "question": "Was sind die Bestandteile des Codierungsmodells?",
+    "answer": "Ein abstrakter Zeichensatz, eine Codetabelle, ein Codierungsformat, ein Codierungsschema und eine Übertragungssyntax, die über sogenannten „glatten Text“ hinausgeht."
+  },
+  {
+    "question": "Wann wurde SGML offiziell registriert?",
+    "answer": "SGML wurde 1986 unter ISO 8879 offiziell registriert"
+  },
+  {
+    "question": "Welche Programmiersprache wird standardmäßig verwendet, um interaktive Elemente für Webseiten zu erstellen?",
+    "answer": "JavaScript."
+  },
+  {
+    "question": "Wie viele verschiedene Arten von Knoten gibt es in XPath?",
+    "answer": "Sieben."
+  },
+  {
+    "question": "Was ist ein XSLT-Prozessor?",
+    "answer": "Ein XSLT-Prozessor ist eine Anwendung, die ein XML-Dokument nach Maßgabe eines XSLT-Stylesheets transformiert."
+  },
+  {
+    "question": "Welche Aufgabe haben Konstruktoren in XQuery?",
+    "answer": "Konstruktoren dienen dazu, neue Knoten zu erzeugen."
+  },
+  {
+    "question": "Was passiert während der dynamischen Auswertungsphase einer Xquery-Abfrage?",
+    "answer": "Die dynamische Auswertungsphase ist die Phase, während der der Wert eines Ausdruckes berechnet wird."
+  },
+  {
+    "question": "Was sind die Bestandteile eines RDF-Tripels?",
+    "answer": "Ein RDF-Tripel besteht aus einem"
+  },
+  {
+    "question": "Was ist Reifikation?",
+    "answer": "Reifikation beschreibt die Fähigkeit, eine Aussage als eigene Ressource zu modellieren."
+  },
+  {
+    "question": "Was ist die zentrale Idee des Dokumentenmodells?",
+    "answer": "Die zentrale Idee des Dokumentenmodells ist, die Kerndaten des Dokuments redundanzfrei in einer Art Reinform vorzuhalten, wie man es auch beim Design relationaler Faktendatenbanken mit Normalformen verfolgt."
+  },
+  {
+    "question": "Wofuer wird ein Codierungsschema benutzt?",
+    "answer": "Ein Codierungsschema wird dazu genutzt, zu einem Codierungsformat zusätzlich festzulegen, wie die Codierungseinheiten in Bytefolgen zu serialisieren sind."
+  },
+  {
+    "question": "Was sind Hypertextknoten?",
+    "answer": "Ein HTMLText ist somit die Gesamtheit von thematisch zusammengehörigen Texteinheiten, den sogenannten Hypertextknoten."
+  },
+  {
+    "question": "Was ist ein Browser?",
+    "answer": "Ein Web-Browser ist eine Softwarekomponente, die HTML-Dokumente aus dem Web laden und darstellen kann und welche die Möglichkeit zur Navigation entlang der eingebetteten HTML-Links bietet"
+  },
+  {
+    "question": "Was ist das HTML-DOM?",
+    "answer": "Das HTML-DOM ist das Objektmodell und die Schnittstelle für HTML"
+  },
+  {
+    "question": "Welche Content-Modelle gibt es in HTML5?",
+    "answer": "Es existieren sieben quasi semantische Content-Modelle: Flow-Content, Sectioning-Content, Heading-Content, Phrasing-Content, Embedded-Content, Interactive-Content und Metadata-Content"
+  },
+  {
+    "question": "Was ist eine relative URL?",
+    "answer": "Eine relative URL besteht nur aus durch den Solidus / getrennten Pfadsegmenten"
+  },
+  {
+    "question": "Wann ist ein XML-Dokument wohlgeformt?",
+    "answer": "Wenn es der XML-Grammatik genügt"
+  },
+  {
+    "question": "Was sind Namensraumknoten in XPath?",
+    "answer": "Namensraumknoten stehen für den im aktuellen Kontext gültigen Namensraum"
+  },
+  {
+    "question": "Welche Aufgaben werden dem benutzenden vom Semantischen Web abgenommen?",
+    "answer": "Informationssuche, Informationssammlung, Informationsklassifikation, Informationsfilterung, Informationsmanagement, Information-Mining, Informationsentdeckung, Informationsbewertung"
+  },
+  {
+    "question": "Welche Bedeutung hat das Schlüsselwort „rdfs: range“?",
+    "answer": "Dieses Schlüsselwort spezifiziert die Klassen, deren Elemente Objekt einer bestimmten Eigenschaft sein können."
+  },
+  {
+    "question": "Welche Container-Klassen gibt es in RDF?",
+    "answer": "rdf: bag, rdf: Seq und rdf: Alt."
+  },
+  {
+    "question": "Wie wird in OWL die Äquivalenz von zwei Klassen definiert?",
+    "answer": "axiom ::= 'EquivalentClasses(' classID classID { classID } ')'"
+  },
+  {
+    "question": "Wie kann das Problem der semantischen Heterogenität reduziert werden?",
+    "answer": "Das Problem der semantischen Heterogenität kann reduziert werden, wenn alle Begriffe, die eine Ontologie beschreibt, möglichst eindeutig und nicht-redundant definiert werden und weltweit gültig sind."
+  },
+  {
+    "question": "Was sind die minimalen Bestandteile einer Ontologie?",
+    "answer": "Konzepte, Instanzen und Relationen."
+  },
+  {
+    "question": "Was ist ein Konzept?",
+    "answer": "Ein Konzept ist eine gedankliche Vorstellung bzw. die subjektive Interpretation über ein reales Ding in der Welt."
+  },
+  {
+    "question": "Was ist ein Wissenskontext?",
+    "answer": "Die Spezifikation eines Wissenskontexts bedeutet, dass man sich gegenseitig darauf verständigen und einigen muss, welche Bedeutung die Entitäten haben, die den Inhalt einer Web-Informationsressource repräsentieren."
+  },
+  {
+    "question": "Was ist eine semi-formale Sprache?",
+    "answer": "Eine semi-formale Sprache ist eine künstlich formal definierte Sprache, die die Beschreibung der Begriffe sowohl informell in einer natürlichen Sprache als auch formal in einer für Computer interpretierbaren Wissensrepräsentationssprache unterstützt."
+  },
+  {
+    "question": "Was sind Beschreibungslogiken?",
+    "answer": "Beschreibungslogiken(description logics) sind eine Familie von Sprachen zur Wissensrepräsentation."
+  },
+  {
+    "question": "Welcher Dialekt von OWL ermöglicht die Verwendung von prädikatenlogischen Ausdrücken höheren Grades?",
+    "answer": "OWL-FULL"
+  }
+]
