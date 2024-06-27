@@ -1,7 +1,6 @@
 import { AiChat, useAsBatchAdapter } from "@nlux/react";
 import { personas } from "./personas";
 import { QueryResponse } from "./types";
-import { renderer } from "./renderer";
 import { useRef } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
@@ -11,7 +10,7 @@ const backendURL = "http://127.0.0.1:5000";
 export const Chat = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const adapter = useAsBatchAdapter<QueryResponse>(async (message: string) => {
+  const adapter = useAsBatchAdapter<string>(async (message: string) => {
     try {
       const response = await fetch(backendURL + "/query", {
         method: "POST",
@@ -27,13 +26,9 @@ export const Chat = () => {
 
       const data: QueryResponse = await response.json();
 
-      return data;
+      return data.answer;
     } catch (error) {
-      return {
-        input: message,
-        answer:
-          "Entschuldigung, beim Verarbeiten Ihrer Anfrage ist ein Fehler aufgetreten. Prüfen Sie bitte Ihre VPN-Verbindung und versuchen Sie es erneut.",
-      };
+      return "Entschuldigung, beim Verarbeiten Ihrer Anfrage ist ein Fehler aufgetreten. Prüfen Sie bitte Ihre VPN-Verbindung und versuchen Sie es erneut.";
     }
   });
 
@@ -86,9 +81,11 @@ export const Chat = () => {
         displayOptions={{ height: 600, width: 500 }}
         adapter={adapter}
         personaOptions={personas}
-        messageOptions={{
-          responseRenderer: renderer,
-        }}
+        messageOptions={
+          {
+            //responseRenderer: renderer,
+          }
+        }
       />
       <input type="file" ref={fileInputRef} style={{ display: "none" }} accept=".pdf" onChange={handleFileChange} />
       <button onClick={handleClick} style={{ margin: "8px" }} disabled={uploadDocumentMutation.isPending}>
