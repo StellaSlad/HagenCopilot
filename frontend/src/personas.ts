@@ -1,5 +1,5 @@
 import { PersonaOptions } from "@nlux/react";
-import assistantAvatar from "./assets/hagencopilot_small.png";
+import assistantAvatar from "./assets/hagencopilot_avatar_light.png";
 
 import userAvatar from "./assets/user_avatar.svg";
 

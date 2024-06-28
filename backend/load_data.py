@@ -1,13 +1,14 @@
 from langchain_community.document_loaders.pdf import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from vectore_store import get_all_unique_filenames, vector_store, embedding
+from vectore_store import get_all_unique_filenames, vector_store, embeddings
 import time
 import glob
 import warnings
+import pymilvus
 
 
 def load_data_dir(path: str):
-    print(f"Loading data from {path}")
+    print(f"Loading data from {path} \n")
 
     start_time = time.time()
 
@@ -29,7 +30,13 @@ def load_data_file(file_path: str, ):
 
     filename = file_path.split("/")[-1]
 
-    if filename.split("/")[-1] in get_all_unique_filenames():
+    all_existing_files = []
+    try:
+        all_existing_files = get_all_unique_filenames()
+    except pymilvus.exceptions.SchemaNotReadyException as e:
+        print("No files found in the collection")
+
+    if filename.split("/")[-1] in all_existing_files:
         raise ValueError(f"File {filename} already exists in the collection")
 
     start_time = time.time()
@@ -49,12 +56,12 @@ def load_data_file(file_path: str, ):
 
     vector_store.from_documents(
         documents=all_splits,
-        embedding=embedding,
+        embedding=embeddings,
     )
 
     end_time = time.time()
 
-    print(f"Embedding completed in {end_time - start_time} seconds")
+    print(f"Embedding completed in {end_time - start_time} seconds\n")
 
 
 if __name__ == "__main__":
