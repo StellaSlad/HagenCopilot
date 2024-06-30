@@ -7,7 +7,7 @@ Ensure to add a .env file, take a look at the .env-example file.
 1. Install requirements:
 
 ```bash
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 ```
 
 2. Start the docker-compose:
