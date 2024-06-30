@@ -78,7 +78,7 @@ export const Chat = () => {
   return (
     <>
       <AiChat
-        displayOptions={{ height: 600, width: 500 }}
+        displayOptions={{ height: 600, width: 500, colorScheme: "dark"}}
         adapter={adapter}
         personaOptions={personas}
         messageOptions={

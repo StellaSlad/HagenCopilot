@@ -3,12 +3,11 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from vectore_store import get_all_unique_filenames, vector_store, embeddings
 import time
 import glob
-import warnings
 import pymilvus
 
 
 def load_data_dir(path: str):
-    print(f"Loading data from {path} \n")
+    print(f"Loading data from {path}")
 
     start_time = time.time()
 
@@ -17,12 +16,12 @@ def load_data_dir(path: str):
         try:
             load_data_file(pdf_file)
         except ValueError as e:
-            warnings.warn(f"Duplicate file skipped: {pdf_file}\n\n")
+            print(f"Duplicate file skipped: {pdf_file}\n")
             continue  # Skip this document
 
     end_time = time.time()
 
-    print(f"Embedding completed in {end_time - start_time} seconds")
+    print(f"Embedding completed in {end_time - start_time} seconds\n")
 
 
 def load_data_file(file_path: str, ):
