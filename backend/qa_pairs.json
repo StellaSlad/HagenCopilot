@@ -156,27 +156,27 @@
     "answer": "Nein."
   },
   {
-    "question": "Repräsentiert eine Glyphe immer genau ein Zeichen?",
+    "question": "Repräsentiert eine Glyphe immer genau ein Zeichen? Antworte mit Ja oder Nein.",
     "answer": "Nein."
   },
   {
-    "question": "Ist META ein Kindelement von HEAD?",
+    "question": "Ist META ein Kindelement von HEAD? Antworte mit Ja oder Nein.",
     "answer": "Ja."
   },
   {
-    "question": "Gibt es bei RDF zweistellige Relationen?",
+    "question": "Gibt es bei RDF zweistellige Relationen? Antworte mit Ja oder Nein.",
     "answer": "Nein."
   },
   {
-    "question": "Hat jede XML-Datei einen Wurzelknoten?",
+    "question": "Hat jede XML-Datei einen Wurzelknoten? Antworte mit Ja oder Nein.",
     "answer": "Ja."
   },
   {
-    "question": "Ist ein XSLT-Dokument auch ein XML-Dokument?",
+    "question": "Ist ein XSLT-Dokument auch ein XML-Dokument? Antworte mit Ja oder Nein.",
     "answer": "Ja."
   },
   {
-    "question": "Können XSLT-Stylesheets im allgemeinen auf HTML-Dokumente angewendet werden?",
+    "question": "Können XSLT-Stylesheets im allgemeinen auf HTML-Dokumente angewendet werden? Antworte mit Ja oder Nein.",
     "answer": "Nein."
   }
 ]
