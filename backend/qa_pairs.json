@@ -41,7 +41,7 @@
   },
   {
     "question": "Was sind die Bestandteile eines RDF-Tripels?",
-    "answer": "Ein RDF-Tripel besteht aus einem"
+    "answer": "Ein RDF-Tripel besteht aus einem Subjekt, einem Prädikat und einem Objekt."
   },
   {
     "question": "Was ist Reifikation?",
