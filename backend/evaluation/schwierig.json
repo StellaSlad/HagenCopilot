@@ -1,4 +1,5 @@
-[{
+[
+  {
     "question": "Was ist der Unterschied zwischen Browsing und direkter Suche?",
     "answer": "Browsing bezeichnet eine aktive Auseinandersetzung mit neuen Inhalten ohne ein konkretes Informationsbedürfnis. Direkte Suche hingegen dient dazu, ein spezielles Informationsbedürfnis zu befriedigen."
   },
@@ -6,35 +7,36 @@
     "question": "Was sind die drei Ebenen des Dokumentenmodells?",
     "answer": "Die inhaltliche Ebene, die Strukturebene und die Formatebene."
   },
-    {
+  {
     "question": "Erkläre das Zusammenspiel von HTML, CSS und JavaScript!",
     "answer": "HTML, CSS und JavaScript arbeiten zusammen, um strukturierte Dokumente im Web zu erstellen. HTML ist für die Text- und Strukturdarstellung zuständig, CSS für die Formatvorgaben und JavaScript für die Interaktivität und dynamische Manipulation der Webseite. Dieses Zusammenspiel realisiert das Prinzip der Separation of Concerns, indem es unterschiedliche Verantwortlichkeiten auf verschiedene Technologien verteilt."
   },
-    {
+  {
     "question": "Welchen Zweck hat eine Dokumententyp-Definition?",
     "answer": "Eine Dokumententyp-Definition (DTD) dient dazu, die Struktur und die erlaubten Elemente eines XML-Dokuments zu definieren. Sie stellt sicher, dass das Dokument wohlgeformt und valide ist, indem sie die Regeln und das Inhaltsmodell vorgibt, an die sich das XML-Dokument halten muss."
   },
-    {
+  {
     "question": "Was bedeutet der Ausdruck <!ELEMENT vorlesung (titel,dozent,semester)> in einem XML-Dokument?",
     "answer": "Der Ausdruck <!ELEMENT vorlesung (titel,dozent,semester)> in einem XML-Dokument bedeutet, dass das Element 'vorlesung' aus den Kindelementen 'titel', 'dozent' und 'semester' besteht, und zwar genau in dieser Reihenfolge."
   },
-    {
+  {
     "question": "Deklarieren Sie die Attribute eines bereits deklarierten Elements Kundenname. Es soll ein optionales Attribut Telefonnummer geben und ein verpflichtendes Attribut Kundentyp mit den möglichen Werten Neukunde und Bestandskunde. Verwende bitte einfache Anführungszeichen statt doppelten Anführungszeichen und Tabs statt Zeilenumbrüchen.",
-    "answer": "<!ATTLIST Kundenname Telefonnummer NMTOKEN #IMPLIED	Kundentyp (Neukunde | Bestandskunde) #REQUIRED>"
+    "answer": "<!ATTLIST Kundenname Telefonnummer NMTOKEN #IMPLIED\tKundentyp (Neukunde | Bestandskunde) #REQUIRED>"
   },
-    {
+  {
     "question": "Was sind die Vorteile von XSD gegenüber DTD?",
     "answer": "XSD (XML Schema Definition) bietet mehrere Vorteile gegenüber DTDs: Es ermöglicht die Definition von Datentypen, unterstützt Namensräume, ist in XML-Syntax geschrieben, was die Verarbeitung und das Verständnis erleichtert, und bietet erweiterte Validierungsmöglichkeiten wie die Definition komplexer Typen und Einschränkungen."
   },
-    {
+  {
     "question": "Werden Elemente, die nicht zum Namensraum von XSLT gehören, vom XSLT-Prozessor transformiert?",
     "answer": "Nein."
   },
-	{
+  {
     "question": "Wie kann man eine Argumentation mithilfe von RDF formulieren?",
     "answer": "Eine Argumentation kann in RDF formuliert werden, indem man Prämissen und Schlussfolgerungen als RDF-Ressourcen darstellt. Dabei werden Informationsknoten (I-Knoten) für aussagenbezogene Informationen und Schemaknoten (S-Knoten) für die Anwendung von Schemata verwendet. Dieses Format wird im Argument Interchange Format (AIF) genutzt, um logische Argumente und ihre Beziehungen zu repräsentieren."
   },
-    {
+  {
     "question": "Was sind die wichtigsten Unterschiede zwischen den verschiedenen OWL-Versionen?",
     "answer": "Die verschiedenen OWL-Versionen (OWL Lite, OWL DL, OWL Full) unterscheiden sich hauptsächlich in ihrer Ausdruckskraft und Komplexität. OWL Lite ist die einfachste Version und für grundlegende Klassifikationen geeignet. OWL DL bietet eine höhere Ausdruckskraft und bleibt dabei berechenbar. OWL Full ist die umfangreichste Version, die volle RDF-Kompatibilität bietet, aber die Berechenbarkeit nicht garantiert. OWL 2 erweitert diese Versionen um zusätzliche Features wie erweiterte Datentypen und verbesserte Werkzeuge für die Modellierung komplexer Klassen und Eigenschaften."
-  }]
+  }
+]

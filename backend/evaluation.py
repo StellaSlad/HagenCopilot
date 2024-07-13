@@ -1,13 +1,10 @@
 from pydantic import BaseModel
-import os
 import json
-from langchain_community.document_loaders import DirectoryLoader
-from langchain_community.document_loaders.pdf import PyPDFLoader
-
+import os
 from chat import llm, invoke
 from embeddings import embeddings
 
-from ragas import evaluate
+from ragas import RunConfig, evaluate
 from ragas.metrics import faithfulness, answer_relevancy, context_precision, context_recall, context_entity_recall, answer_similarity, answer_correctness
 
 from datasets import Dataset
@@ -16,52 +13,92 @@ import nest_asyncio
 nest_asyncio.apply()
 
 
+def clean_text(text: str) -> str:
+    # Extend replacements to include ä, ü, and ö
+    replacements = {
+        'ä': 'ae',
+        'ü': 'ue',
+        'ö': 'oe',
+        # Add the uppercase versions if needed
+        'Ä': 'Ae',
+        'Ü': 'Ue',
+        'Ö': 'Oe',
+    }
+
+    # Iterate over the replacements and apply them
+    for original, replacement in replacements.items():
+        text = text.replace(original, replacement)
+
+    text = text.replace('\n', ' ')
+    return text
+
+
 class QAPair(BaseModel):
     question: str
     answer: str
 
 
-# load pre-defined qa pairs
-with open("backend/qa_pairs.json") as json_file:
-    qa_pairs_data = json.load(json_file)
-    qa_pairs = [QAPair(**pair) for pair in qa_pairs_data]
+files = ["einfach.json", "unbekannt.json", "schwierig.json"]
+models = ["llama3:latest", "mixtral:latest",
+          "llama3:70b", "mistral:latest", "gemma:latest"]
+path = "backend/evaluation"
 
-results = []
-contexts = []
-for qa in qa_pairs:
-    result = invoke(qa.question)
-    results.append(result['answer'])
+for model in models:
+    # Set the MODEL environment variable
+    os.environ["MODEL"] = model
 
-    sources = result["context"]
-    contents = []
-    for i in range(len(sources)):
-        contents.append(sources[i].get("page_content"))
+    for file in files:
 
-    contexts.append(contents)
+        # load pre-defined qa pairs
+        with open(f"{path}/{file}", encoding="utf-8") as json_file:
+            qa_pairs_data: list[dict] = json.load(json_file)
+            qa_pairs = [QAPair(question=clean_text(pair.get("question")),
+                               answer=clean_text(pair.get("answer")))
+                        for pair in qa_pairs_data]
 
-d = {
-    "question": [qa.question for qa in qa_pairs],
-    "answer": results,
-    "contexts": contexts,
-    "ground_truth": [qa.answer for qa in qa_pairs],
-}
+        results = []
+        contexts = []
+        for qa in qa_pairs:
+            result = invoke(qa.question)
+            results.append(clean_text(result['answer']))
 
-dataset = Dataset.from_dict(d)
-score = evaluate(dataset,
-                 llm=llm,
-                 embeddings=embeddings,
-                 is_async=False,
-                 metrics=[answer_relevancy,
-                          # faithfulness, # this metric is not working
-                          # context_recall, # this metric is not working
-                          # context_precision,
-                          answer_correctness])
+            sources: list[dict] = result["context"]
+            contents = []
+            for i in range(len(sources)):
+                contents.append(clean_text(sources[i].get("page_content")))
 
-score_df = score.to_pandas()
-score_df.to_csv("EvaluationScores.csv", encoding="utf-8", index=False)
+            contexts.append(contents)
 
-print(score_df[['answer_relevancy',
-                # 'faithfulness',
-               # 'context_recall',
-                # 'context_precision',
-                'answer_correctness']].mean(axis=0))
+        d = {
+            "question": [qa.question for qa in qa_pairs],
+            "answer": results,
+            "contexts": contexts,
+            "ground_truth": [qa.answer for qa in qa_pairs],
+        }
+
+        dataset = Dataset.from_dict(d)
+        score = evaluate(dataset,
+                         llm=llm,
+                         embeddings=embeddings,
+                         is_async=False,
+                         raise_exceptions=False,
+                         run_config=RunConfig(timeout=60*2,
+                                              max_retries=10*2,
+                                              max_wait=60*2,
+                                              max_workers=1,
+                                              thread_timeout=80.0*2),
+                         metrics=[answer_relevancy,
+                                  faithfulness,  # this metric is not working
+                                  context_recall,  # this metric is not working
+                                  context_precision,
+                                  answer_correctness])
+
+        score_df = score.to_pandas()
+        score_df.to_csv(f"{path}/Evaluation_{file}_{model}.csv",
+                        encoding="utf-8", index=False)
+        print(f"Model: {model}, File: {file}")
+        print(score_df[['answer_relevancy',
+                        'faithfulness',
+                        'context_recall',
+                        'context_precision',
+                        'answer_correctness']].mean(axis=0))
