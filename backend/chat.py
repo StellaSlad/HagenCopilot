@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from langchain_core.documents.base import Document
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
@@ -5,18 +6,13 @@ from langchain_community.llms.ollama import Ollama
 from langchain_core.runnables import Runnable
 import json
 import os
-from dotenv import load_dotenv
 
 from vectore_store import vector_store
 from prompt import PROMPT
 
 
 def get_llm(model: str) -> Ollama:
-    # Load the .env file
-    if model is None:
-        load_dotenv()
-        model = os.getenv("MODEL")
-
+    load_dotenv()
     model_url = os.getenv("MODEL_URL")
 
     return Ollama(
@@ -58,7 +54,8 @@ if __name__ == "__main__":
     while True:
         query = input("\nQuestion: ")
 
-        result = get_retrival_chain().invoke({"input": query})
+        result = get_retrival_chain().invoke(
+            {"input": query}, model="llama3:latest")
 
         print("\nAnswer:")
         print(result["answer"])

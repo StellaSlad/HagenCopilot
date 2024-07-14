@@ -10,6 +10,7 @@ from werkzeug.utils import secure_filename
 load_dotenv()
 
 DATA_DIR = os.getenv("DATA_DIR")
+MODEL = os.getenv("MODEL")
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -24,7 +25,7 @@ def query_handler():
     request_data = request.get_json()
     question = request_data.get('input', '')
 
-    response = invoke(input=question)
+    response = invoke(input=question, model=MODEL)
 
     print('Results: ', response)
 

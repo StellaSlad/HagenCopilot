@@ -38,7 +38,7 @@ class QAPair(BaseModel):
     answer: str
 
 
-version = "3"
+version = "4"
 files = ["einfach.json", "unbekannt.json", "schwierig.json"]
 models = ["llama3:latest", "mixtral:latest",
           "llama3:70b", "mistral:latest", "gemma:latest"]
@@ -86,18 +86,18 @@ for model in models:
                                               max_wait=60*2,
                                               max_workers=1,
                                               thread_timeout=80.0*2),
-                         metrics=[answer_relevancy,
-                                  faithfulness,  # this metric is not working
-                                  context_recall,  # this metric is not working
-                                  context_precision,
-                                  answer_correctness])
+                         metrics=[  # answer_relevancy,
+                             # faithfulness,
+                             # context_recall,
+                             # context_precision,
+                             answer_correctness])
 
         score_df = score.to_pandas()
         score_df.to_csv(f"{path}/Evaluation_{file}_{model}_v{version}.csv",
                         encoding="utf-8", index=False)
         print(f"Model: {model}, File: {file}")
-        print(score_df[['answer_relevancy',
-                        'faithfulness',
-                        'context_recall',
-                        'context_precision',
-                        'answer_correctness']].mean(axis=0))
+        print(score_df[[  # 'answer_relevancy',
+            # 'faithfulness',
+            # 'context_recall',
+            # 'context_precision',
+            'answer_correctness']].mean(axis=0))
