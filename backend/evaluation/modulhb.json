@@ -1,0 +1,39 @@
+[
+    {
+      "question": "Wer ist Modulverantwortliche/r im Modul Funktionalanalysis?",
+      "answer": "Prof. Dr. Delio Mugnolo."
+    },
+    {
+      "question": "Was sind die inhaltlichen Voraussetzungen für das Modul Lineare Optimierung?",
+      "answer": "Das Modul setzt die Module 61111 Mathematische Grundlagen, 61211 Analysis und insbesondere sehr gute Kenntnisse des Moduls 61112 Linearen Algebra voraus."
+    },
+    {
+      "question": "Gibt es Anmerkungen für das Modul Architektur und Implementierung von Datenbanksystemen?",
+      "answer": "Ja! Das Modul 63122 Architektur und Implementierung von Datenbanksystemen ist nicht zusammen mit dem früheren Modul 63111 Vertiefende Konzepte von Datenbanksystemen (vor dem Wintersemester 2020/21) verwendbar."
+    },
+    {
+      "question": "Welche Art der Prüfungsleistung gibt es im Modul Kommunikations- und Rechnernetze?",
+      "answer": "Benotete zweistündige Prüfungsklausur."
+    },
+    {
+      "question": "Wie häufig wird das Masterseminar Verteilte Systeme und kooperative Systeme angeboten?",
+      "answer": "In jedem Sommersemester."
+    },
+    {
+      "question": "Wie lauten die Pflichtmodule im Masterstudiengang Data Science?",
+      "answer": "Die Pflichtmodule lauten Mathematische Grundlagen von Data Science, Data Engineering für Data Science, Einführung in Maschinelles Lernen und Einführung in Data Science."
+    },
+    {
+      "question": "Wie oft kann ich die Masterprüfung wiederholen?",
+      "answer": "Jede Modulabschlussprüfung kann bei Nichtbestehen jeweils zweimal wiederholt werden. Die Masterarbeit kann bei Nichtbestehen einmal wiederholt werden."
+    },
+    {
+      "question": "Wie lang darf die Masterarbeit maximal sein?",
+      "answer": "Die Masterarbeit soll ohne Anlagen im Regelfall einen Umfang von 120 DIN-A4-Seiten nicht überschreiten."
+    },
+    {
+      "question": "Wie lautet der Mastergrad bei bestehen der Masterprüfung im Studiengang Data Science?",
+      "answer": "Ist die Masterprüfung bestanden, verleiht die Fa-kultät für Mathematik und Informatik den Grad „Master of Science“, abgekürzt „M.Sc.“, in Data Science."
+    }
+  ]
+  
