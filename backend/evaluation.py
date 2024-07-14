@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 import json
 import os
-from chat import llm, invoke
+from chat import get_llm, invoke
 from embeddings import embeddings
 
 from ragas import RunConfig, evaluate
@@ -38,14 +38,13 @@ class QAPair(BaseModel):
     answer: str
 
 
+version = "3"
 files = ["einfach.json", "unbekannt.json", "schwierig.json"]
 models = ["llama3:latest", "mixtral:latest",
           "llama3:70b", "mistral:latest", "gemma:latest"]
 path = "backend/evaluation"
 
 for model in models:
-    # Set the MODEL environment variable
-    os.environ["MODEL"] = model
 
     for file in files:
 
@@ -59,7 +58,7 @@ for model in models:
         results = []
         contexts = []
         for qa in qa_pairs:
-            result = invoke(qa.question)
+            result = invoke(qa.question, model=model)
             results.append(clean_text(result['answer']))
 
             sources: list[dict] = result["context"]
@@ -78,7 +77,7 @@ for model in models:
 
         dataset = Dataset.from_dict(d)
         score = evaluate(dataset,
-                         llm=llm,
+                         llm=get_llm(model=model),
                          embeddings=embeddings,
                          is_async=False,
                          raise_exceptions=False,
@@ -94,7 +93,7 @@ for model in models:
                                   answer_correctness])
 
         score_df = score.to_pandas()
-        score_df.to_csv(f"{path}/Evaluation_{file}_{model}.csv",
+        score_df.to_csv(f"{path}/Evaluation_{file}_{model}_v{version}.csv",
                         encoding="utf-8", index=False)
         print(f"Model: {model}, File: {file}")
         print(score_df[['answer_relevancy',

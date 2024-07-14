@@ -2,6 +2,7 @@ from langchain_core.documents.base import Document
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
 from langchain_community.llms.ollama import Ollama
+from langchain_core.runnables import Runnable
 import json
 import os
 from dotenv import load_dotenv
@@ -9,23 +10,29 @@ from dotenv import load_dotenv
 from vectore_store import vector_store
 from prompt import PROMPT
 
-# Load the .env file
-load_dotenv()
 
-model_url = os.getenv("MODEL_URL")
-model = os.getenv("MODEL")
+def get_llm(model: str) -> Ollama:
+    # Load the .env file
+    if model is None:
+        load_dotenv()
+        model = os.getenv("MODEL")
 
-llm = Ollama(
-    base_url=model_url,
-    model=model,
-)
+    model_url = os.getenv("MODEL_URL")
 
-retriever = vector_store.as_retriever(
-    search_kwargs={'k': 5, 'fetch_k': 20})
+    return Ollama(
+        base_url=model_url,
+        model=model,
+    )
 
-document_chain = create_stuff_documents_chain(llm, PROMPT)
 
-retrieval_chain = create_retrieval_chain(retriever, document_chain)
+def get_retrival_chain(model: str = None) -> Runnable:
+    llm = get_llm(model)
+    retriever = vector_store.as_retriever(
+        search_kwargs={'k': 5, 'fetch_k': 20})
+
+    document_chain = create_stuff_documents_chain(llm, PROMPT)
+
+    return create_retrieval_chain(retriever, document_chain)
 
 
 class DocumentEncoder(json.JSONEncoder):
@@ -36,8 +43,8 @@ class DocumentEncoder(json.JSONEncoder):
         return super().default(obj)
 
 
-def invoke(input: str):
-    result = retrieval_chain.invoke({"input": input})
+def invoke(input: str, model: str = None):
+    result = get_retrival_chain(model).invoke({"input": input})
 
     # converting the result to a json string
     json_result = json.dumps(result, cls=DocumentEncoder)
@@ -51,7 +58,7 @@ if __name__ == "__main__":
     while True:
         query = input("\nQuestion: ")
 
-        result = retrieval_chain.invoke({"input": query})
+        result = get_retrival_chain().invoke({"input": query})
 
         print("\nAnswer:")
         print(result["answer"])

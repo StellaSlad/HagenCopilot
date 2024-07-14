@@ -121,50 +121,50 @@
   },
   {
     "question": "Was sind Beschreibungslogiken?",
-    "answer": "Beschreibungslogiken(description logics) sind eine Familie von Sprachen zur Wissensrepräsentation."
+    "answer": "Beschreibungslogiken (description logics) sind eine Familie von Sprachen zur Wissensrepräsentation."
   },
   {
     "question": "Welcher Dialekt von OWL ermöglicht die Verwendung von prädikatenlogischen Ausdrücken höheren Grades?",
     "answer": "OWL-FULL"
   },
   {
-    "question": "Ist HTML eine Auszeichnungssprache? Antworte mit Ja oder Nein.",
+    "question": "Ist HTML eine Auszeichnungssprache? Antworte mit einfach mit Ja oder Nein, ohne weitere erklärung.",
     "answer": "Ja."
   },
   {
-    "question": "Ist JavaScript eine Auszeichnungssprache? Antworte mit Ja oder Nein.",
+    "question": "Ist JavaScript eine Auszeichnungssprache? Antworte mit einfach mit Ja oder Nein, ohne weitere erklärung.",
     "answer": "Nein."
   },
   {
-    "question": "Gibt es bei CSS zweistellige Operatoren? Antworte mit Ja oder Nein.",
+    "question": "Gibt es bei CSS zweistellige Operatoren? Antworte mit einfach mit Ja oder Nein, ohne weitere erklärung.",
+    "answer": "Nein."
+  },
+  {
+    "question": "Folgen Entity References in HTML dem Muster -<<EntName>>? Antworte mit einfach mit Ja oder Nein, ohne weitere erklärung.",
+    "answer": "Nein."
+  },
+  {
+    "question": "Duerfen Attributnamen in einem HTML-Dokument mehrmals vorkommen? Antworte mit einfach mit Ja oder Nein, ohne weitere erklärung.",
+    "answer": "Nein."
+  },
+  {
+    "question": "Können CSS Stylesheets auch auf XML-Dokumente angewendet werden? Antworte mit einfach mit Ja oder Nein, ohne weitere erklärung.",
     "answer": "Ja."
   },
   {
-    "question": "Folgen Entity References in HTML dem Muster -<<EntName>>? Antworte mit Ja oder Nein.",
+    "question": "Ist die Entwicklung von XML abgeschlossen? Antworte mit einfach mit Ja oder Nein, ohne weitere erklärung.",
     "answer": "Nein."
   },
   {
-    "question": "Duerfen Attributnamen in einem HTML-Dokument mehrmals vorkommen? Antworte mit Ja oder Nein.",
+    "question": "Repräsentiert eine Glyphe immer genau ein Zeichen? Antworte mit einfach mit Ja oder Nein, ohne weitere erklärung.",
     "answer": "Nein."
   },
   {
-    "question": "Können CSS Stylesheets auch auf XML-Dokumente angewendet werden? Antworte mit Ja oder Nein.",
+    "question": "Ist META ein Kindelement von HEAD? Antworte mit einfach mit Ja oder Nein, ohne weitere erklärung.",
     "answer": "Ja."
   },
   {
-    "question": "Ist die Entwicklung von XML abgeschlossen? Antworte mit Ja oder Nein.",
-    "answer": "Nein."
-  },
-  {
-    "question": "Repräsentiert eine Glyphe immer genau ein Zeichen? Antworte mit Ja oder Nein.",
-    "answer": "Nein."
-  },
-  {
-    "question": "Ist META ein Kindelement von HEAD? Antworte mit Ja oder Nein.",
-    "answer": "Ja."
-  },
-  {
-    "question": "Gibt es bei RDF zweistellige Relationen? Antworte mit Ja oder Nein.",
+    "question": "Gibt es bei RDF zweistellige Relationen? Antworte mit einfach mit Ja oder Nein, ohne weitere erklärung.",
     "answer": "Nein."
   },
   {
