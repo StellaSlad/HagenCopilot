@@ -35,7 +35,6 @@ def query_handler():
 @app.route('/upload_document', methods=['POST'])
 @cross_origin()
 def upload_document():
-    print("fefee")
     if 'document' not in request.files:
         return jsonify({'error': 'No document part'}), 400
     file = request.files['document']
@@ -55,5 +54,5 @@ def upload_document():
             return jsonify({'error': str(e)}), 409
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
