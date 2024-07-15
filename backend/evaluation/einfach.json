@@ -9,7 +9,7 @@
   },
   {
     "question": "Welche Zeichenkodierung ist am bekanntesten?",
-    "answer": "US-ASCII"
+    "answer": "Die bekannteste Zeichenkodierung ist UTF-8 (Unicode Transformation Format - 8-bit)"
   },
   {
     "question": "Was sind die Bestandteile des Codierungsmodells?",

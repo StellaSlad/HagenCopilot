@@ -38,8 +38,8 @@ class QAPair(BaseModel):
     answer: str
 
 
-version = "4"
-files = ["einfach.json", "unbekannt.json", "schwierig.json"]
+version = "5"
+files = ["einfach.json", "unbekannt.json", "schwierig.json", "modulhb.json"]
 models = ["llama3:latest", "mixtral:latest",
           "llama3:70b", "mistral:latest", "gemma:latest"]
 path = "backend/evaluation"
