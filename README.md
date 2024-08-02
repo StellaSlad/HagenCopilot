@@ -24,6 +24,9 @@ pip install -r backend/requirements.txt
 
 ```bash
 docker-compose up -d
+
+# To rebuild the docker images
+docker-compose up -d --build
 ```
 
 4. Legen Sie PDF-Dateien in den `data`-Ordner und starten Sie die Indexierung der Dateien:

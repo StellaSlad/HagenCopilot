@@ -46,10 +46,10 @@ def upload_document():
         file.save(file_path)
         try:
             load_data_file(file_path)
-            os.remove(file_path)  # Remove the file after processing
+            # os.remove(file_path)  # Remove the file after processing
             return jsonify({'response': 'Document uploaded and indexed successfully'})
         except ValueError as e:
-            os.remove(file_path)  # Remove the file after processing
+            # os.remove(file_path)  # Remove the file after processing
             print(e)
             return jsonify({'error': str(e)}), 409
 
