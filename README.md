@@ -3,33 +3,33 @@
 
 ## Run HagenCopilot
 
-Ensure to add a .env file, take a look at the .env-example file.
+1. Ensure to add a .env file, take a look at the .env-example file.
 
-1. Install requirements:
+2. Install requirements:
 
 ```bash
 pip install -r backend/requirements.txt
 ```
 
-2. Start the docker-compose:
+3. Start the docker-compose:
 
 ```bash
 docker-compose up -d
 ```
 
-3. Put pdf files in the `data` folder and start the indexation of the files:
+4. Put pdf files in the `data` folder and start the indexation of the files:
 
 ```bash
 python backend/load_data.py
 ```
 
-4. Start the backend:
+5. Start the backend:
 
 ```bash
 python backend/api.py
 ```
 
-5. Access HagenCopilot at http://localhost:3000
+6. Access HagenCopilot at http://localhost:3000
 
 ## Run evalutation pipeline
 
