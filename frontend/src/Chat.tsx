@@ -4,13 +4,14 @@ import { QueryResponse } from "./types";
 import { useRef } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
+import { renderer } from "./renderer";
 
 const backendURL = "http://127.0.0.1:5000";
 
 export const Chat = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const adapter = useAsBatchAdapter<string>(async (message: string) => {
+   const adapter = useAsBatchAdapter<QueryResponse>(async (message: string) => {
     try {
       const response = await fetch(backendURL + "/query", {
         method: "POST",
@@ -26,9 +27,13 @@ export const Chat = () => {
 
       const data: QueryResponse = await response.json();
 
-      return data.answer;
+      return data;
     } catch (error) {
-      return "Entschuldigung, beim Verarbeiten Ihrer Anfrage ist ein Fehler aufgetreten. Prüfen Sie bitte Ihre VPN-Verbindung und versuchen Sie es erneut.";
+      return {
+        input: message,
+        answer:
+          "Entschuldigung, beim Verarbeiten Ihrer Anfrage ist ein Fehler aufgetreten. Prüfen Sie bitte Ihre VPN-Verbindung und versuchen Sie es erneut.",
+      };
     }
   });
 
@@ -83,7 +88,7 @@ export const Chat = () => {
         personaOptions={personas}
         messageOptions={
           {
-            //responseRenderer: renderer,
+            responseRenderer: renderer
           }
         }
       />

@@ -1,5 +1,6 @@
 <p align="center"><img width=250 src="docs/img/hagencopilot_dark.png#gh-dark-mode-only" /></p>
 <p align="center"><img width=250 src="docs/img/hagencopilot_light.png#gh-light-mode-only" /></p>
+
 ## Run HagenCopilot
 
 Ensure to add a .env file, take a look at the .env-example file.
@@ -28,12 +29,7 @@ python backend/load_data.py
 python backend/api.py
 ```
 
-5. Start the frontend:
-
-```bash
-cd frontend
-npm run dev
-```
+5. Access HagenCopilot at http://localhost:3000
 
 ## Run evalutation pipeline
 
