@@ -59,14 +59,15 @@ export const Chat = () => {
     },
     onSuccess: () => {
       toast.success("Dokument erfolgreich hochgeladen!", {
-        toastId: new Date().toISOString(),
+        toastId: new Date().getTime(),
       });
     },
     onError: (e) => {
       toast.error(e.message, {
-        toastId: new Date().toISOString(),
+        toastId: new Date().getTime(),
       });
     },
+    gcTime: 0,
   });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
