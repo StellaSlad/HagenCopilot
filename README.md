@@ -36,11 +36,16 @@ Nach mehreren Updates der Benutzeroberfläche gab es bei dem letzten und bis jet
 ### Example Markdown with Mermaid Diagram
 
 ```mermaid
-  graph TD;
-      A-->B;
-      A-->C;
-      B-->D;
-      C-->D;
+graph TD;
+    User[Benutzer] -->|Indexiert Daten| Frontend[Frontend];
+    User -->|Stellt Fragen| Frontend;
+    Frontend -->|Sendet Anfrage| Backend[Backend];
+    Backend -->|Indexiert Daten| Database[Datenbank];
+    Backend -->|Holt Kontext| Database;
+    Backend -->|Formuliert Antwort| LLM[Large Language Model];
+    LLM -->|Antwortet| Backend;
+    Backend -->|Antwortet| Frontend;
+    Frontend -->|Zeigt Antwort| User;
 ```
 
 ## HagenCopilot ausführen
