@@ -35,15 +35,13 @@ Nach mehreren Updates der Benutzeroberfläche gab es bei dem letzten und bis jet
 
 ### Example Markdown with Mermaid Diagram
 
-````markdown
-## Architekturdiagramm
-
-````mermaid
-graph TD;
-    A[Benutzer] --> B[Frontend];
-    B --> C[Backend];
-    C --> D[Database];
-    C --> E[External API];
+```mermaid
+  graph TD;
+      A-->B;
+      A-->C;
+      B-->D;
+      C-->D;
+```
 
 ## HagenCopilot ausführen
 
@@ -53,7 +51,8 @@ graph TD;
 
 ```bash
 pip install -r backend/requirements.txt
-````
+```
+
 ````
 
 3. Starten Sie docker-compose:
@@ -85,3 +84,4 @@ Führen Sie die Evaluationspipeline aus:
 ```bash
 python backend/evaluation.py
 ```
+````
