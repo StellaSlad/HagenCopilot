@@ -3,11 +3,42 @@
 
 ## Inhaltsverzeichnis
 
+- [HagenCopilot ausführen](#hagencopilot-ausführen)
 - [Kontext des Projekts](#kontext-des-projekts)
 - [Hintergrund & Idee](#hintergrund--idee)
 - [Details zur Umsetzung](#details-zur-umsetzung)
-- [HagenCopilot ausführen](#hagencopilot-ausführen)
+- [Lösungsskizze](#lösungsskizze)
 - [Evaluationspipeline ausführen](#evaluationspipeline-ausführen)
+
+## HagenCopilot ausführen
+
+1. Stellen Sie sicher, dass Sie eine .env-Datei hinzufügen. Schauen Sie sich die .env-example-Datei an.
+
+2. Installieren Sie die Python-Abhängigkeiten:
+
+```bash
+pip install -r backend/requirements.txt
+```
+
+3. Starten Sie docker-compose:
+
+```bash
+docker-compose up -d
+```
+
+4. Legen Sie PDF-Dateien in den `data`-Ordner und starten Sie die Indexierung der Dateien:
+
+```bash
+python backend/load_data.py
+```
+
+5. Starten Sie das Backend:
+
+```bash
+python backend/api.py
+```
+
+6. Nun Können Sie auf HagenCopilot unter http://localhost:3000 zugreifen.
 
 ## Kontext des Projekts
 
@@ -33,7 +64,7 @@ Das Large Language Model (LLM), welches freundlicherweise von dem Server der Fer
 
 Nach mehreren Updates der Benutzeroberfläche gab es bei dem letzten und bis jetzt aktuellen Update die Möglichkeit für den Benutzer, die Datenbank flexibel zu erweitern. So wurde ein Button eingefügt, der den Explorer öffnet und die Möglichkeit bietet, eine PDF-Datei auszuwählen. Nach einer kurzen Wartezeit, in der das Embedding wieder stattfindet, wird dem Benutzer ein Feedback nach erfolgreichem Upload gegeben. Sollte diese Datei schon in der Datenbank vorhanden sein, wird dem Benutzer eine Meldung zurückgegeben, dass diese Datei bereits existiert, Somit ist die Datenbank von Verunreinigungen bzgl. doppelter Datensätze geschützt.
 
-### Lösungsskizze
+## Lösungsskizze
 
 ```mermaid
 graph TD;
@@ -48,38 +79,6 @@ graph TD;
     Frontend -->|Zeigt Antwort| User;
 ```
 
-## HagenCopilot ausführen
-
-1. Stellen Sie sicher, dass Sie eine .env-Datei hinzufügen. Schauen Sie sich die .env-example-Datei an.
-
-2. Installieren Sie die Python-Abhängigkeiten:
-
-```bash
-pip install -r backend/requirements.txt
-```
-
-````
-
-3. Starten Sie docker-compose:
-
-```bash
-docker-compose up -d
-```
-
-4. Legen Sie PDF-Dateien in den `data`-Ordner und starten Sie die Indexierung der Dateien:
-
-```bash
-python backend/load_data.py
-```
-
-5. Starten Sie das Backend:
-
-```bash
-python backend/api.py
-```
-
-6. Nun Können Sie auf HagenCopilot unter http://localhost:3000 zugreifen.
-
 ## Evaluationspipeline ausführen
 
 Stellen Sie sicher, dass die VPN-Verbindung besteht und docker-compose läuft und die Daten bereits indexiert wurden.
@@ -89,4 +88,3 @@ Führen Sie die Evaluationspipeline aus:
 ```bash
 python backend/evaluation.py
 ```
-````
