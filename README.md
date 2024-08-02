@@ -33,7 +33,7 @@ Das Large Language Model (LLM), welches freundlicherweise von dem Server der Fer
 
 Nach mehreren Updates der Benutzeroberfläche gab es bei dem letzten und bis jetzt aktuellen Update die Möglichkeit für den Benutzer, die Datenbank flexibel zu erweitern. So wurde ein Button eingefügt, der den Explorer öffnet und die Möglichkeit bietet, eine PDF-Datei auszuwählen. Nach einer kurzen Wartezeit, in der das Embedding wieder stattfindet, wird dem Benutzer ein Feedback nach erfolgreichem Upload gegeben. Sollte diese Datei schon in der Datenbank vorhanden sein, wird dem Benutzer eine Meldung zurückgegeben, dass diese Datei bereits existiert, Somit ist die Datenbank von Verunreinigungen bzgl. doppelter Datensätze geschützt.
 
-### Example Markdown with Mermaid Diagram
+### Lösungsskizze
 
 ```mermaid
 graph TD;
@@ -41,10 +41,10 @@ graph TD;
     User -->|Stellt Fragen| Frontend;
     Frontend -->|Sendet Anfrage| Backend[Backend];
     Backend -->|Indexiert Daten| Database[Datenbank];
-    Backend -->|Holt Kontext| Database;
-    Backend -->|Formuliert Antwort| LLM[Large Language Model];
+    Backend <-->|Holt Kontext| Database;
+    Backend -->|Sendet Frage + Kontext| LLM[Large Language Model];
     LLM -->|Antwortet| Backend;
-    Backend -->|Antwortet| Frontend;
+    Backend -->|Leitet Antwort weiter| Frontend;
     Frontend -->|Zeigt Antwort| User;
 ```
 
