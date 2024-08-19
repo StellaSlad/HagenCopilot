@@ -3,12 +3,21 @@
 
 ## Inhaltsverzeichnis
 
-- [HagenCopilot ausführen](#hagencopilot-ausführen)
-- [Kontext des Projekts](#kontext-des-projekts)
-- [Hintergrund & Idee](#hintergrund--idee)
-- [Details zur Umsetzung](#details-zur-umsetzung)
-- [Lösungsskizze](#lösungsskizze)
-- [Evaluationspipeline ausführen](#evaluationspipeline-ausführen)
+<ul>
+  <li><a href="#hagencopilot-ausführen">HagenCopilot ausführen</a></li>
+  <li><a href="#kontext-des-projekts">Kontext des Projekts</a></li>
+  <li><a href="#hintergrund--idee">Hintergrund & Idee</a></li>
+  <li><a href="#details-zur-umsetzung">Details zur Umsetzung</a></li>
+  <li><a href="#lösungsskizze">Lösungsskizze</a></li>
+  <li><a href="#evaluation">Evaluation</a>
+    <ul>
+      <li><a href="#datensatz">Datensatz</a></li>
+      <li><a href="#metriken">Metriken</a></li>
+      <li><a href="#ergebnisse">Ergebnisse</a></li>
+      <li><a href="#evaluationspipeline-ausführen">Evaluationspipeline ausführen</a></li>
+    </ul>
+  </li>
+</ul>
 
 ## HagenCopilot ausführen
 
@@ -82,12 +91,74 @@ graph TD;
     Frontend -->|Zeigt Antwort| User;
 ```
 
-## Evaluationspipeline ausführen
+## Evaluation
 
-Stellen Sie sicher, dass die VPN-Verbindung besteht und docker-compose läuft und die Daten bereits indexiert wurden.
+Die Funktionsfähigkeit des Chatbots wurde mithilfe des Ragas-Pakets evaluiert. Dabei wurden jeweils folgende Large Language Models benutzt und die Ergebnisse miteinander verglichen: **gemma_latest**, **llama3_70b**, **llama3_latest**, **mistral_latest** und **mixtral_latest**.
 
-Führen Sie die Evaluationspipeline aus:
+### Datensatz
+
+Jedes Dataset ist eine Sammlung von Fragen und Antworten, die von Teammitgliedern verfasst wurden, die die Lehrveranstaltung "Daten-, Dokumenten-, Informations- und Wissensmanagement" belegt haben.
+
+1. **einfach.json**: Fragen, deren Antwort direkt aus dem Text der Kurseinheiten abgelesen werden kann und die mit einem Satz oder einer Aufzählung von Stichpunkten beantwortet werden können.
+2. **schwierig.json**: Die erste Art von schwierigen Fragen beinhaltet Stichwörter, die in mehreren Kurseinheiten vorkommen. Somit wird geprüft, wie gut der Chatbot den relevantesten Context auswählen kann. Die zweite Art von schwierigen Fragen prüft, wie gut der Chatbot Informationen aus mehreren Sätzen/Kapiteln kombinieren kann, um eine Frage zu beantworten.
+3. **unbekannt.json**: Dieses Dataset prüft, ob der Chatbot richtig erkennt, wenn eine Frage nicht mithilfe der Dokumente aus der Datensammlung beantwortet werden kann.
+
+### Metriken
+
+Folgende Metriken aus dem Ragas-Paket wurden benutzt, um die Funktionsfähigkeit des Chatbots zu bewerten: Context Recall, Context Precision, Faithfulness, Answer Relevancy und Answer Correctness. Die Metriken sind wie folgt definiert:
+
+- **Context Recall (CR)**: Ein Maß dafür, ob alle relevanten Informationen abgerufen wurden. Für die Berechnung wird die Referenzlösung (RL) und der abgerufene Kontext herangezogen:
+
+  $$ CR = \frac{|\text{RL-Sätze, die dem Kontext zugeschrieben werden können}|}{\text{Anzahl der Sätze in RL}} $$
+
+- **Context Precision (CP)**: Ein Maß dafür, ob alle relevanten Elemente der Referenzlösung, die im Kontext vorhanden sind, ein höheres Ranking erhalten als nicht-relevante Elemente. \( k \) steht für die Gesamtanzahl der Elemente im Kontext.
+
+  $$ CP@k = \frac{\text{Precision@k}}{\text{Gesamtanzahl der relevanten Elemente in den Top K Ergebnissen}} $$
+
+  $$ Precision@k = \frac{\text{True Positives@k}}{\text{True Positives@k + False Positives@k}} $$
+
+- **Faithfulness**: Anzahl der aus dem gegebenen Kontext abgeleiteten Behauptungen geteilt durch die Gesamtzahl der Behauptungen in der generierten Antwort. Diese Metrik gibt somit an, wie sachlich korrekt die generierte Antwort ist.
+
+- **Answer Relevancy (AR)**: Um die Relevanz der Antwort zu berechnen, wird das LLM mehrfach aufgefordert, eine Frage zur generierten Antwort zu formulieren. Der durchschnittliche Kosinusabstand zwischen diesen Fragen und der ursprünglichen Frage wird dann gemessen. Das Konzept basiert darauf, dass eine Antwort, die gut zur ursprünglichen Frage passt, ähnliche Fragen erzeugt.
+
+- **Answer Correctness (AC)**: Für die Berechnung des Scores wird die generierte Antwort mit der Referenzlösung verglichen, wobei die Punktzahl zwischen 0 und 1 liegt. Zwei Hauptaspekte sind dabei wichtig: die semantische und die faktische Ähnlichkeit. Diese werden gewichtet, um eine Gesamtnote für die Korrektheit zu erhalten.
+
+### Ergebnisse
+
+Bei einfachen Fragen erzielten alle LLMs sehr ähnliche Ergebnisse. Context Recall lag zwischen 0.67 und 0.73 je nach Modell (vgl. Abbildung 2). Context Precision lag je nach Modell zwischen 0.69 und 0.73. Es gibt also keinen wesentlichen Unterschied zwischen den Modellen, was die sogenannten Retrieval Metrics angeht.
+
+![Abbildung 2: Context Recall und Context Precision des Chatbots für das Dataset „einfach.json“ in Abhängigkeit vom benutzten Large Language Model.](img/einfach_retrieval.jpg)
+
+Auch bei den sogenannten Generation Metrics sind die Ergebnisse sehr ähnlich, wenn man nur das Dataset „einfach.json“ benutzt. Faithfulness lag zwischen 0.64 und 0.67, Answer Relevancy lag zwischen 0.75 und 0.84 (vgl. Abbildung 3).
+
+![Abbildung 3: Answer Relevancy und Faithfulness des Chatbots für das Dataset „einfach.json“ in Abhängigkeit vom benutzten Large Language Model.](img/einfach_generation.jpg)
+
+Bei den schwierigeren Fragen, wie sie im Dataset „schwierig.json“ vorkommen, zeigen die verschiedenen LLMs ebenfalls gewisse Ähnlichkeiten in ihren Ergebnissen, allerdings mit leicht unterschiedlichen Schwerpunkten. Context Recall lag je nach Modell zwischen 0.73 und 0.83 (vgl. Abbildung 4). Das Modell **mistral_latest** erzielte hierbei den höchsten Wert, während **gemma_latest** und **llama3_70b** deutlich niedrigere Werte aufwiesen. Context Precision war bei allen Modellen relativ ähnlich (zwischen 0.70 und 0.76).
+
+![Abbildung 4: Context Recall und Context Precision des Chatbots für das Dataset „schwierig.json“ in Abhängigkeit vom benutzten Large Language Model.](img/schwierig_retrieval.jpg)
+
+Auch bei den sogenannten Generation Metrics gibt es Unterschiede. Die Faithfulness variiert zwischen 0.49 und 0.77 (vgl. Abbildung 5), wobei **gemma_latest** und **llama3_70b** sehr hohe Werte erzielten und **mixtral_latest** den niedrigsten. Die Answer Relevancy bewegt sich zwischen 0.75 und 0.84, wobei **mistral_latest** das beste Ergebnis zeigt.
+
+![Abbildung 5: Answer Relevancy und Faithfulness des Chatbots für das Dataset „schwierig.json“ in Abhängigkeit vom benutzten Large Language Model.](img/schwierig_generation.jpg)
+
+Insgesamt zeigen die Modelle bei schwierigen Fragen etwas variablere Ergebnisse, insbesondere bei Context Recall und Faithfulness. Betrachtet man nur Faithfulness, also die sachliche Korrektheit der Antworten, dann schneiden **gemma_latest**, **llama3_70b** und **mistral_latest** deutlich besser ab als die anderen Modelle. **mistral_latest** zeigte auch die besten Ergebnisse beim Context Recall, wodurch dieses LLM insgesamt die besten Ergebnisse beim schwierigen Dataset zeigte. Um zuverlässig sagen zu können, dass dieses Modell am besten geeignet ist, müsste man den Chatbot mit viel mehr (und viel größeren Datasets) evaluieren, was den Zeitrahmen des Praktikums sprengen würde.
+
+Mithilfe des Datasets „unbekannt.json“ konnte gezeigt werden, dass das Modell bei Fragen, die ähnliche Themen anschneiden, wie z. B. „Sicherheit im Internet“, erkennen kann, dass der Kontext keine Antwort auf die Frage bereitstellt. Der Chatbot antwortete dem Nutzer, dass er die Frage nicht beantworten kann.
+
+Anmerkung: Die Metrik Answer Correctness schien nicht sehr aussagekräftig zu sein, da die Länge der Antwort starken Einfluss auf den Score hatte. Deswegen wurde sie nicht in die Beurteilung miteinbezogen.
+
+### Evaluationspipeline ausführen
+
+Um die Evaluationspipeline erfolgreich auszuführen, stellen Sie sicher, dass die folgenden Voraussetzungen erfüllt sind:
+
+1. **VPN-Verbindung**: Stellen Sie sicher, dass eine aktive VPN-Verbindung besteht, falls erforderlich.
+2. **Docker-Compose**: Vergewissern Sie sich, dass Docker und Docker-Compose installiert und ausgeführt werden.
+3. **Datenindexierung**: Stellen Sie sicher, dass die Daten bereits indexiert wurden.
+
+Führen Sie anschließend die Evaluationspipeline mit dem folgenden Befehl aus:
 
 ```bash
 python backend/evaluation.py
 ```
+
+Dieser Befehl startet die Evaluationspipeline und führt die notwendigen Schritte zur Bewertung der Chatbot-Performance durch.
