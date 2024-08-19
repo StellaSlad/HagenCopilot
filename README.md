@@ -109,13 +109,19 @@ Folgende Metriken aus dem Ragas-Paket wurden benutzt, um die Funktionsfähigkeit
 
 - **Context Recall (CR)**: Ein Maß dafür, ob alle relevanten Informationen abgerufen wurden. Für die Berechnung wird die Referenzlösung (RL) und der abgerufene Kontext herangezogen:
 
-  $$ CR = \frac{|\text{RL-Sätze, die dem Kontext zugeschrieben werden können}|}{\text{Anzahl der Sätze in RL}} $$
+$$ CR = \frac{|\text{RL-Sätze, die dem Kontext zugeschrieben werden können}|}{\text{Anzahl der Sätze in RL}} $$
 
 - **Context Precision (CP)**: Ein Maß dafür, ob alle relevanten Elemente der Referenzlösung, die im Kontext vorhanden sind, ein höheres Ranking erhalten als nicht-relevante Elemente. \( k \) steht für die Gesamtanzahl der Elemente im Kontext.
 
-  $$ CP@k = \frac{\text{Precision@k}}{\text{Gesamtanzahl der relevanten Elemente in den Top K Ergebnissen}} $$
+$$
+CP@k = \frac{\text{Precision@k}}{\text{Gesamtanzahl der relevanten Elemente in den Top K Ergebnissen}} \\
+$$
 
-  $$ Precision@k = \frac{\text{True Positives@k}}{\text{True Positives@k + False Positives@k}} $$
+<br>
+
+$$
+Precision@k = \frac{\text{True Positives@k}}{\text{True Positives@k + False Positives@k}}
+$$
 
 - **Faithfulness**: Anzahl der aus dem gegebenen Kontext abgeleiteten Behauptungen geteilt durch die Gesamtzahl der Behauptungen in der generierten Antwort. Diese Metrik gibt somit an, wie sachlich korrekt die generierte Antwort ist.
 
