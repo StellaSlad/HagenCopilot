@@ -1,3 +1,16 @@
+/**
+ * Chat.tsx
+ *
+ * This module defines the Chat component, which integrates an AI chat interface and document upload functionality.
+ * It uses the @nlux/react library for the chat interface and @tanstack/react-query for handling file uploads.
+ *
+ * Components:
+ *   Chat: The main chat component that renders the AI chat interface and handles document uploads.
+ *
+ * Usage:
+ *   Import and use the `Chat` component to provide an AI chat interface and document upload functionality in your application.
+ */
+
 import { AiChat, useAsBatchAdapter } from "@nlux/react";
 import { personas } from "./personas";
 import { QueryResponse } from "./types";
@@ -5,13 +18,25 @@ import { useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
 import { renderer } from "./renderer";
+import React from "react";
 
 const backendURL = "http://127.0.0.1:5000";
 
+/**
+ * Chat component that integrates an AI chat interface and document upload functionality.
+ *
+ * @returns {JSX.Element} The rendered chat component.
+ */
 export const Chat = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
 
+  /**
+   * Adapter for handling chat messages and sending them to the backend.
+   *
+   * @param {string} message - The chat message to be sent.
+   * @returns {Promise<QueryResponse>} The response from the backend.
+   */
   const adapter = useAsBatchAdapter<QueryResponse>(async (message: string) => {
     try {
       const response = await fetch(backendURL + "/query", {
@@ -38,6 +63,9 @@ export const Chat = () => {
     }
   });
 
+  /**
+   * Mutation for handling document uploads.
+   */
   const uploadDocumentMutation = useMutation({
     mutationFn: async (file: File) => {
       const formData = new FormData();
@@ -70,6 +98,11 @@ export const Chat = () => {
     },
   });
 
+  /**
+   * Handle file input change event.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement>} event - The file input change event.
+   */
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files[0]) {
@@ -77,6 +110,9 @@ export const Chat = () => {
     }
   };
 
+  /**
+   * Handle click event for uploading the selected file.
+   */
   const handleClick = () => {
     if (!file) {
       return;
@@ -85,6 +121,9 @@ export const Chat = () => {
     uploadDocumentMutation.mutate(file);
   };
 
+  /**
+   * Trigger the file input click event.
+   */
   const triggerFileInput = () => {
     fileInputRef.current?.click();
   };
@@ -92,29 +131,21 @@ export const Chat = () => {
   return (
     <>
       <AiChat
-        displayOptions={{ height: 600, width: 500, colorScheme: "dark"}}
+        displayOptions={{ height: 600, width: 500, colorScheme: "dark" }}
         adapter={adapter}
         personaOptions={personas}
-        messageOptions={
-          {
-            responseRenderer: renderer
-          }
-        }
+        messageOptions={{
+          responseRenderer: renderer,
+        }}
       />
-     <input
-        type="file"
-        ref={fileInputRef}
-        accept=".pdf"
-        onChange={handleFileChange}
-        style={{ display: 'none' }}
-      />
-      <button onClick={triggerFileInput} style={{ margin: '8px' }} disabled={uploadDocumentMutation.isPending}>
+      <input type="file" ref={fileInputRef} accept=".pdf" onChange={handleFileChange} style={{ display: "none" }} />
+      <button onClick={triggerFileInput} style={{ margin: "8px" }} disabled={uploadDocumentMutation.isPending}>
         {uploadDocumentMutation.isPending ? "..." : "Dokument auswählen"}
       </button>
 
-        <div style={{ margin: '8px' }}>
-          <strong>Ausgewählte Datei:</strong> {file?.name || "Keine Datei ausgewählt"}
-        </div>
+      <div style={{ margin: "8px" }}>
+        <strong>Ausgewählte Datei:</strong> {file?.name || "Keine Datei ausgewählt"}
+      </div>
 
       <button onClick={handleClick} style={{ margin: "8px" }} disabled={uploadDocumentMutation.isPending || !file}>
         {uploadDocumentMutation.isPending ? "Dokument wird hochgeladen..." : "Dokument hochladen"}

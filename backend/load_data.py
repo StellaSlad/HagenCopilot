@@ -1,3 +1,11 @@
+"""
+load_data.py
+
+This module provides functions to load and process PDF files from a specified directory.
+It uses the PyPDFLoader to read PDF files, splits the text into chunks, and embeds the text
+into a vector store for further use in language models.
+"""
+
 from langchain_community.document_loaders.pdf import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from vectore_store import get_all_unique_filenames, vector_store, embeddings
@@ -7,6 +15,18 @@ import pymilvus
 
 
 def load_data_dir(path: str):
+    """
+    Load and process all PDF files from the specified directory.
+
+    This function searches for all PDF files in the given directory, processes each file,
+    and embeds the text into a vector store. If a file is already processed, it skips that file.
+
+    Parameters:
+    path (str): The directory path containing PDF files to be processed.
+
+    Returns:
+    None
+    """
     print(f"Loading data from {path}")
 
     start_time = time.time()
@@ -24,7 +44,22 @@ def load_data_dir(path: str):
     print(f"Embedding completed in {end_time - start_time} seconds\n")
 
 
-def load_data_file(file_path: str, ):
+def load_data_file(file_path: str):
+    """
+    Load and process a single PDF file.
+
+    This function reads the PDF file, splits the text into chunks, and embeds the text into a vector store.
+    If the file is already processed, it raises a ValueError.
+
+    Parameters:
+    file_path (str): The path to the PDF file to be processed.
+
+    Returns:
+    None
+
+    Raises:
+    ValueError: If the file already exists in the collection.
+    """
     print(f"Loading data from {file_path}")
 
     filename = file_path.split("/")[-1]
@@ -33,7 +68,7 @@ def load_data_file(file_path: str, ):
     try:
         all_existing_files = get_all_unique_filenames()
     except pymilvus.exceptions.SchemaNotReadyException as e:
-        print("No files found in the collection")
+        print("No files found in the collection", e)
 
     if filename.split("/")[-1] in all_existing_files:
         raise ValueError(f"File {filename} already exists in the collection")

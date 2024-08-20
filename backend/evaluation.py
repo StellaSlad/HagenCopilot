@@ -1,6 +1,12 @@
+"""
+evaluation.py
+
+This module evaluates the performance of various language models on predefined question-answer pairs.
+It loads QA pairs from JSON files, invokes the models to get answers, and evaluates the results using specified metrics.
+"""
+
 from pydantic import BaseModel
 import json
-import os
 from chat import get_llm, invoke
 from embeddings import embeddings
 
@@ -13,7 +19,35 @@ import nest_asyncio
 nest_asyncio.apply()
 
 
+class QAPair(BaseModel):
+    """
+    A class used to represent a Question-Answer pair.
+
+    Attributes:
+    ----------
+    question : str
+        The question part of the QAPair.
+    answer : str
+        The answer part of the QAPair.
+    """
+    question: str
+    answer: str
+
+
 def clean_text(text: str) -> str:
+    """
+    Clean the input text by replacing specific characters with their ASCII equivalents.
+
+    This function replaces German umlauts (ä, ü, ö) and their uppercase versions (Ä, Ü, Ö)
+    with their ASCII equivalents (ae, ue, oe, Ae, Ue, Oe). It also replaces newline characters
+    with spaces.
+
+    Parameters:
+    text (str): The input text to be cleaned.
+
+    Returns:
+    str: The cleaned text with specified replacements applied.
+    """
     # Extend replacements to include ä, ü, and ö
     replacements = {
         'ä': 'ae',
@@ -33,23 +67,16 @@ def clean_text(text: str) -> str:
     return text
 
 
-class QAPair(BaseModel):
-    question: str
-    answer: str
-
-
-version = "5"
 files = ["einfach.json", "unbekannt.json", "schwierig.json", "modulhb.json"]
 models = ["llama3:latest", "mixtral:latest",
           "llama3:70b", "mistral:latest", "gemma:latest"]
-path = "backend/evaluation"
+PATH = "backend/evaluation"
+VERSION = "5"
 
 for model in models:
-
     for file in files:
-
-        # load pre-defined qa pairs
-        with open(f"{path}/{file}", encoding="utf-8") as json_file:
+        # Load pre-defined QA pairs from JSON file
+        with open(f"{PATH}/{file}", encoding="utf-8") as json_file:
             qa_pairs_data: list[dict] = json.load(json_file)
             qa_pairs = [QAPair(question=clean_text(pair.get("question")),
                                answer=clean_text(pair.get("answer")))
@@ -58,9 +85,11 @@ for model in models:
         results = []
         contexts = []
         for qa in qa_pairs:
+            # Invoke the model to get the answer
             result = invoke(qa.question, model=model)
             results.append(clean_text(result['answer']))
 
+            # Extract and clean the context from the result
             sources: list[dict] = result["context"]
             contents = []
             for i in range(len(sources)):
@@ -68,6 +97,7 @@ for model in models:
 
             contexts.append(contents)
 
+        # Prepare the dataset for evaluation
         d = {
             "question": [qa.question for qa in qa_pairs],
             "answer": results,
@@ -86,17 +116,20 @@ for model in models:
                                               max_wait=60*2,
                                               max_workers=1,
                                               thread_timeout=80.0*2),
-                         metrics=[  # answer_relevancy,
+                         metrics=[
+                             # answer_relevancy,
                              # faithfulness,
                              # context_recall,
                              # context_precision,
                              answer_correctness])
 
+        # Save the evaluation results to a CSV file
         score_df = score.to_pandas()
-        score_df.to_csv(f"{path}/Evaluation_{file}_{model}_v{version}.csv",
+        score_df.to_csv(f"{PATH}/Evaluation_{file}_{model.replace(':', '_')}_v{VERSION}.csv",
                         encoding="utf-8", index=False)
         print(f"Model: {model}, File: {file}")
-        print(score_df[[  # 'answer_relevancy',
+        print(score_df[[
+            # 'answer_relevancy',
             # 'faithfulness',
             # 'context_recall',
             # 'context_precision',

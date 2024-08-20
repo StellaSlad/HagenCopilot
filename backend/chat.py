@@ -1,3 +1,13 @@
+"""
+chat.py
+
+This module provides functionality to interact with a language model using a retrieval-based approach.
+It sets up the language model, constructs retrieval chains, and processes user queries to generate responses.
+
+Usage:
+    Run this script directly to enter an interactive question-answer loop with the language model.
+"""
+
 from dotenv import load_dotenv
 from langchain_core.documents.base import Document
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -12,6 +22,17 @@ from prompt import PROMPT
 
 
 def get_llm(model: str) -> Ollama:
+    """
+    Initialize and return an Ollama language model instance.
+
+    This function loads environment variables, retrieves the model URL, and initializes the Ollama model.
+
+    Parameters:
+    model (str): The name of the model to be used.
+
+    Returns:
+    Ollama: An instance of the Ollama language model.
+    """
     load_dotenv()
     model_url = os.getenv("MODEL_URL")
 
@@ -22,6 +43,18 @@ def get_llm(model: str) -> Ollama:
 
 
 def get_retrival_chain(model: str = None) -> Runnable:
+    """
+    Create and return a retrieval chain.
+
+    This function sets up a retriever using the vector store, creates a document chain with the language model and prompt,
+    and combines them into a retrieval chain.
+
+    Parameters:
+    model (str, optional): The name of the model to be used. Defaults to None.
+
+    Returns:
+    Runnable: A runnable retrieval chain.
+    """
     llm = get_llm(model)
     retriever = vector_store.as_retriever(
         search_kwargs={'k': 5, 'fetch_k': 20})
@@ -32,15 +65,34 @@ def get_retrival_chain(model: str = None) -> Runnable:
 
 
 class DocumentEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Document):
+    """
+    Custom JSON encoder for Document objects.
+
+    This class extends the default JSONEncoder to handle Document objects by converting them into dictionaries.
+    """
+
+    def default(self, o):
+        if isinstance(o, Document):
             # Convert the Document object into a dictionary
-            return obj.__dict__
-        return super().default(obj)
+            return o.__dict__
+        return super().default(o)
 
 
-def invoke(input: str, model: str = None):
-    result = get_retrival_chain(model).invoke({"input": input})
+def invoke(query: str, model: str = None) -> dict:
+    """
+    Process the input query using the retrieval chain and return the result.
+
+    This function invokes the retrieval chain with the query, converts the result to a JSON string,
+    and then parses it back into a dictionary.
+
+    Parameters:
+    query (str): The input query to be processed.
+    model (str, optional): The name of the model to be used. Defaults to None.
+
+    Returns:
+    dict: The result of the query as a dictionary.
+    """
+    result = get_retrival_chain(model).invoke({"input": query})
 
     # converting the result to a json string
     json_result = json.dumps(result, cls=DocumentEncoder)
@@ -52,10 +104,10 @@ def invoke(input: str, model: str = None):
 
 if __name__ == "__main__":
     while True:
-        query = input("\nQuestion: ")
+        q = input("\nQuestion: ")
 
-        result = get_retrival_chain().invoke(
-            {"input": query}, model="llama3:latest")
+        res = get_retrival_chain().invoke(
+            {"input": q}, model="llama3:latest")
 
         print("\nAnswer:")
-        print(result["answer"])
+        print(res["answer"])
