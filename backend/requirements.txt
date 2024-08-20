@@ -6,3 +6,4 @@ Flask==3.0.3
 sentence-transformers==3.0.0
 Flask-Cors==4.0.1
 ragas==0.1.10
+pypdf==4.3.1

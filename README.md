@@ -44,6 +44,8 @@ docker-compose up -d --build
 python backend/load_data.py
 ```
 
+**Beachten Sie:** Bei erstmaliger Ausführung muss das Embedding-Modell noch heruntergeladen werden, dies kann einen Moment dauern. Falls die DLL-Datei [libomp140_x86_64](https://www.dllme.com/dll/files/libomp140_x86_64/00637fe34a6043031c9ae4c6cf0a891d/download) fehlt, müssen Sie diese nachinstallieren.
+
 5. Starten Sie das Backend:
 
 ```bash
