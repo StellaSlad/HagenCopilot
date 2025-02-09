@@ -1,172 +1,158 @@
 <p align="center"><img width=250 src="img/hagencopilot_dark.png#gh-dark-mode-only" /></p>
 <p align="center"><img width=250 src="img/hagencopilot_light.png#gh-light-mode-only" /></p>
 
-## Inhaltsverzeichnis
+## Table of Contents
 
-<ul>
-  <li><a href="#hagencopilot-ausführen">HagenCopilot ausführen</a></li>
-  <li><a href="#kontext-des-projekts">Kontext des Projekts</a></li>
-  <li><a href="#hintergrund--idee">Hintergrund & Idee</a></li>
-  <li><a href="#details-zur-umsetzung">Details zur Umsetzung</a></li>
-  <li><a href="#lösungsskizze">Lösungsskizze</a></li>
-  <li><a href="#evaluation">Evaluation</a>
-    <ul>
-      <li><a href="#datensatz">Datensatz</a></li>
-      <li><a href="#metriken">Metriken</a></li>
-      <li><a href="#ergebnisse">Ergebnisse</a></li>
-      <li><a href="#evaluationspipeline-ausführen">Evaluationspipeline ausführen</a></li>
-    </ul>
-  </li>
-</ul>
+- [Run HagenCopilot](#run-hagencopilot)
+- [Project Context](#project-context)
+- [Background & Idea](#background--idea)
+- [Implementation Details](#implementation-details)
+- [Solution Sketch](#solution-sketch)
+- [Evaluation](#evaluation)
+  - [Dataset](#dataset)
+  - [Metrics](#metrics)
+  - [Results](#results)
+  - [Run Evaluation Pipeline](#run-evaluation-pipeline)
 
-## HagenCopilot ausführen
+## Run HagenCopilot
 
-1. Stellen Sie sicher, dass Sie eine .env-Datei hinzufügen. Schauen Sie sich die .env-example-Datei an.
+1. Make sure to add a `.env` file. Check the `.env-example` file.
+2. Install Python dependencies:
 
-2. Installieren Sie die Python-Abhängigkeiten:
+   ```bash
+   pip install -r backend/requirements.txt
+   ```
 
-```bash
-pip install -r backend/requirements.txt
-```
+3. Start `docker-compose`:
 
-3. Starten Sie docker-compose:
+   ```bash
+   docker-compose up -d
 
-```bash
-docker-compose up -d
+   # To rebuild the docker images
+   docker-compose up -d --build
+   ```
 
-# To rebuild the docker images
-docker-compose up -d --build
-```
+4. Place PDF files in the `data` folder and start indexing the files:
 
-4. Legen Sie PDF-Dateien in den `data`-Ordner und starten Sie die Indexierung der Dateien:
+   ```bash
+   python backend/load_data.py
+   ```
 
-```bash
-python backend/load_data.py
-```
+   **Note:** The first run requires downloading the embedding model, which may take some time. If the DLL file [libomp140_x86_64](https://www.dllme.com/dll/files/libomp140_x86_64/00637fe34a6043031c9ae4c6cf0a891d/download) is missing, you need to install it.
 
-**Beachten Sie:** Bei erstmaliger Ausführung muss das Embedding-Modell noch heruntergeladen werden, dies kann einen Moment dauern. Falls die DLL-Datei [libomp140_x86_64](https://www.dllme.com/dll/files/libomp140_x86_64/00637fe34a6043031c9ae4c6cf0a891d/download) fehlt, müssen Sie diese nachinstallieren.
+5. Start the backend:
 
-5. Starten Sie das Backend:
+   ```bash
+   python backend/api.py
+   ```
 
-```bash
-python backend/api.py
-```
+6. Now, you can access HagenCopilot at [http://localhost:3000](http://localhost:3000).
 
-6. Nun Können Sie auf HagenCopilot unter http://localhost:3000 zugreifen.
+## Project Context
 
-## Kontext des Projekts
+This project was part of the **Speech Technology Practical Course** at **FernUniversität Hagen** during the summer semester of 2024. The framework for this project was provided by the **Center of Advanced Technology for Assisted Learning and Predictive Analytics (CATALPA)**.
 
-Der Kontext des Projektes bezieht sich auf das Fachpraktikum Sprachtechnologie der Fernuniversität Hagen im Sommersemester 2024. Der Rahmen, in dem sich dieses Projekt bewegte, wurde durch das Center of Advanced Technology for Assisted Learning and Predictive Analytics (CATALPA) bereitgestellt.
+## Background & Idea
 
-## Hintergrund & Idee
+Moodle at FernUni Hagen is a cross-program platform used for courses and information exchange between students. Each module provides learning materials and other resources, along with a forum where students can ask questions. Some questions can only be answered by lecturers, leading to longer waiting times.
 
-Das Moodle der Fernuni Hagen ist eine studiengangsübergreifende Plattform, die für Lehrveranstaltungen und zum Informationsaustausch zwischen Studierenden verwendet wird. Zu jedem Modul werden Lehrmaterialien und andere Ressourcen zur Verfügung gestellt und es gibt ein Forum, in welchem Studierende Fragen stellen können. Manche Fragen können nur von den Lehrenden beantwortet werden, was zu einer längeren Wartezeit führt.
+A **Q&A chatbot** would be a useful Moodle plugin to assist students quickly. Our prototype can answer academic and administrative questions if the answer is available in the learning materials or examination regulations. This reduces the workload for lecturers and provides students with faster responses. The chatbot not only generates answers but also references the relevant sources, which can be uploaded during the conversation.
 
-Ein Q&A-Chatbot wäre daher ein sinnvolles Moodle-Plugin, um die Studierenden schnell zu unterstützen. Der von uns entwickelte Prototyp kann fachliche Fragen sowie Fragen zum Studienverlauf/Prüfungsordnung schnell und korrekt beantworten, vorausgesetzt, die Antwort verbirgt sich in einem der Lehrmaterialien oder im Modulhandbuch/ der Prüfungsordnung. Die Lehrenden haben dadurch weniger Aufwand und die Studierenden erhalten schnell eine Antwort. Der Chatbot gibt nicht nur eine Antwort aus, sondern verweist auf die relevanten Quellen, die auch während der Konversation hochgeladen werden können. Ursprünglich sollte der Chatbot die Forenbeiträge dynamisch indizieren, um das Stellen von ähnlichen Fragen zu vermeiden, falls es schon eine passende Antwort im Forum gibt. Aus Datenschutzgründen war das jedoch schwierig umzusetzen, da eine Verarbeitung der Forenbeiträge nur mit einer Einwilligung aller Teilnehmer möglich wäre.
+Initially, the chatbot was supposed to dynamically index forum posts to prevent duplicate questions. However, due to privacy concerns, this was difficult to implement, as processing forum posts would require consent from all participants.
 
-## Details zur Umsetzung
+## Implementation Details
 
-Der Benutzer gibt in einem lokalen Ordner eine beliebige Anzahl an Dateien im .pdf-Format frei. Diese Dateien bilden die Grundlage der Informationen, mit denen der Chatbot mögliche Antworten generiert.
+Users can provide **PDF files** in a local folder, which serve as the knowledge base for the chatbot.
 
-Im ersten Schritt werden diese Dateien durch einen Prozess in Vektoren aufgeteilt. Dieses Embedding hängt von der Größe der Datei bzw. der Textanteile ab: mehr Text bedeutet mehr Embeddings.
+1. The PDF files are **split into vectors** (embeddings) based on text size.
+2. Once indexed, users can interact with the chatbot via a **chat interface** similar to ChatGPT.
+3. The chatbot **retrieves relevant context** from the database based on the user’s question.
+4. A **Large Language Model (LLM)** hosted on FernUni Hagen's servers formulates a **coherent response**.
+5. The chatbot provides an answer along with **references to sources**.
+6. Users can now **dynamically expand** the database by uploading new PDFs via an integrated button.
 
-Sobald diese Datenbank verfügbar ist, kann der Benutzer über ein Chatportal mit dem Chatbot kommunizieren und gewünschte Informationen abrufen. Dabei lehnt sich das Design an einen klassischen Chatverlauf an, wie man ihn bspw. von ChatGPT oder anderen Portalen kennt.
+If a file already exists in the database, a notification prevents duplicate entries, ensuring data integrity.
 
-Die Frage wird an das Backend weitergegeben, wo möglichst passend zu der Frage geeigneter Kontext aus der Datenbank abgerufen wird.
-
-Das Large Language Model (LLM), welches freundlicherweise von dem Server der Fernuniversität Hagen genutzt werden durfte, formuliert abschließend eine wohlgeformte Antwort, die den Kontext zwar nicht wörtlich aus den PDF-Dateien wiedergibt, aber dem Benutzer das Gefühl gibt, dass eine reale Person die Antwort mit dem richtigen Inhalt verfasst hat.
-
-Nach mehreren Updates der Benutzeroberfläche gab es bei dem letzten und bis jetzt aktuellen Update die Möglichkeit für den Benutzer, die Datenbank flexibel zu erweitern. So wurde ein Button eingefügt, der den Explorer öffnet und die Möglichkeit bietet, eine PDF-Datei auszuwählen. Nach einer kurzen Wartezeit, in der das Embedding wieder stattfindet, wird dem Benutzer ein Feedback nach erfolgreichem Upload gegeben. Sollte diese Datei schon in der Datenbank vorhanden sein, wird dem Benutzer eine Meldung zurückgegeben, dass diese Datei bereits existiert, Somit ist die Datenbank von Verunreinigungen bzgl. doppelter Datensätze geschützt.
-
-## Lösungsskizze
+## Solution Sketch
 
 ```mermaid
 graph TD;
-    User[Benutzer] -->|Indexiert Daten| Frontend[Frontend];
-    User -->|Stellt Fragen| Frontend;
-    Frontend -->|Sendet Anfrage| Backend[Backend];
-    Backend -->|Indexiert Daten| Database[Datenbank];
-    Backend <-->|Holt Kontext| Database;
-    Backend -->|Sendet Frage + Kontext| LLM[Large Language Model];
-    LLM -->|Antwortet| Backend;
-    Backend -->|Leitet Antwort weiter| Frontend;
-    Frontend -->|Zeigt Antwort| User;
+    User[User] -->|Indexes Data| Frontend[Frontend];
+    User -->|Asks Questions| Frontend;
+    Frontend -->|Sends Request| Backend[Backend];
+    Backend -->|Indexes Data| Database[Database];
+    Backend <-->|Retrieves Context| Database;
+    Backend -->|Sends Question + Context| LLM[Large Language Model];
+    LLM -->|Responds| Backend;
+    Backend -->|Forwards Answer| Frontend;
+    Frontend -->|Displays Answer| User;
 ```
 
 ## Evaluation
 
-Die Funktionsfähigkeit des Chatbots wurde mithilfe des Ragas-Pakets evaluiert. Dabei wurden jeweils folgende Large Language Models benutzt und die Ergebnisse miteinander verglichen: **gemma_latest**, **llama3_70b**, **llama3_latest**, **mistral_latest** und **mixtral_latest**.
+The chatbot’s performance was evaluated using the **Ragas package**, comparing the following LLMs:
 
-### Datensatz
+- **gemma_latest**
+- **llama3_70b**
+- **llama3_latest**
+- **mistral_latest**
+- **mixtral_latest**
 
-Jedes Dataset ist eine Sammlung von Fragen und Antworten, die von Teammitgliedern verfasst wurden, die die Lehrveranstaltung "Daten-, Dokumenten-, Informations- und Wissensmanagement" belegt haben.
+### Dataset
 
-1. **einfach.json**: Fragen, deren Antwort direkt aus dem Text der Kurseinheiten abgelesen werden kann und die mit einem Satz oder einer Aufzählung von Stichpunkten beantwortet werden können.
-2. **schwierig.json**: Die erste Art von schwierigen Fragen beinhaltet Stichwörter, die in mehreren Kurseinheiten vorkommen. Somit wird geprüft, wie gut der Chatbot den relevantesten Context auswählen kann. Die zweite Art von schwierigen Fragen prüft, wie gut der Chatbot Informationen aus mehreren Sätzen/Kapiteln kombinieren kann, um eine Frage zu beantworten.
-3. **unbekannt.json**: Dieses Dataset prüft, ob der Chatbot richtig erkennt, wenn eine Frage nicht mithilfe der Dokumente aus der Datensammlung beantwortet werden kann.
+The dataset consists of **questions and answers** created by students from the "Data, Document, Information, and Knowledge Management" course:
 
-### Metriken
+1. **simple.json**: Questions with direct answers found in the course units.
+2. **hard.json**: Questions requiring cross-referencing multiple sections.
+3. **unknown.json**: Questions not answerable using the provided documents.
 
-Folgende Metriken aus dem Ragas-Paket wurden benutzt, um die Funktionsfähigkeit des Chatbots zu bewerten: Context Recall, Context Precision, Faithfulness, Answer Relevancy und Answer Correctness. Die Metriken sind wie folgt definiert:
+### Metrics
 
-- **Context Recall (CR)**: Ein Maß dafür, ob alle relevanten Informationen abgerufen wurden. Für die Berechnung wird die Referenzlösung (RL) und der abgerufene Kontext herangezogen:
+The following **Ragas metrics** were used:
 
-$$ CR = \frac{|\text{RL-Sätze, die dem Kontext zugeschrieben werden können}|}{\text{Anzahl der Sätze in RL}} $$
+- **Context Recall (CR)**: Measures how much relevant information was retrieved.
+- **Context Precision (CP)**: Ensures relevant elements rank higher than non-relevant ones.
+- **Faithfulness**: Evaluates factual correctness based on context.
+- **Answer Relevancy (AR)**: Measures how well the response aligns with the question.
+- **Answer Correctness (AC)**: Compares generated responses to reference answers.
 
-- **Context Precision (CP)**: Ein Maß dafür, ob alle relevanten Elemente der Referenzlösung, die im Kontext vorhanden sind, ein höheres Ranking erhalten als nicht-relevante Elemente. \( k \) steht für die Gesamtanzahl der Elemente im Kontext.
+### Results
 
-$$
-CP@k = \frac{\text{Precision@k}}{\text{Gesamtanzahl der relevanten Elemente in den Top K Ergebnissen}} \\
-$$
+For **simple questions**, all LLMs performed similarly. **Context Recall** ranged between 0.67 and 0.73, and **Context Precision** between 0.69 and 0.73.
 
-<br>
+![Figure 2: Context Recall and Context Precision for "simple.json" dataset across different LLMs.](img/einfach_retrieval.jpg)
 
-$$
-Precision@k = \frac{\text{True Positives@k}}{\text{True Positives@k + False Positives@k}}
-$$
+Regarding **generation metrics**, **Faithfulness** was between 0.64 and 0.67, and **Answer Relevancy** between 0.75 and 0.84.
 
-- **Faithfulness**: Anzahl der aus dem gegebenen Kontext abgeleiteten Behauptungen geteilt durch die Gesamtzahl der Behauptungen in der generierten Antwort. Diese Metrik gibt somit an, wie sachlich korrekt die generierte Antwort ist.
+![Figure 3: Answer Relevancy and Faithfulness for "simple.json" dataset across different LLMs.](img/einfach_generation.jpg)
 
-- **Answer Relevancy (AR)**: Um die Relevanz der Antwort zu berechnen, wird das LLM mehrfach aufgefordert, eine Frage zur generierten Antwort zu formulieren. Der durchschnittliche Kosinusabstand zwischen diesen Fragen und der ursprünglichen Frage wird dann gemessen. Das Konzept basiert darauf, dass eine Antwort, die gut zur ursprünglichen Frage passt, ähnliche Fragen erzeugt.
+For **harder questions** in "schwierig.json", **Context Recall** ranged between 0.73 and 0.83. **mistral_latest** performed best, while **gemma_latest** and **llama3_70b** showed lower recall.
 
-- **Answer Correctness (AC)**: Für die Berechnung des Scores wird die generierte Antwort mit der Referenzlösung verglichen, wobei die Punktzahl zwischen 0 und 1 liegt. Zwei Hauptaspekte sind dabei wichtig: die semantische und die faktische Ähnlichkeit. Diese werden gewichtet, um eine Gesamtnote für die Korrektheit zu erhalten.
+![Figure 4: Context Recall and Context Precision for "schwierig.json" dataset across different LLMs.](img/schwierig_retrieval.jpg)
 
-### Ergebnisse
+**Faithfulness** varied between 0.49 and 0.77, with **gemma_latest** and **llama3_70b** performing best, while **mixtral_latest** scored lowest. The **Answer Relevancy** ranges between 0.75 and 0.84, with mistral_latest showing the best result.
 
-Bei einfachen Fragen erzielten alle LLMs sehr ähnliche Ergebnisse. Context Recall lag zwischen 0.67 und 0.73 je nach Modell (vgl. Abbildung 2). Context Precision lag je nach Modell zwischen 0.69 und 0.73. Es gibt also keinen wesentlichen Unterschied zwischen den Modellen, was die sogenannten Retrieval Metrics angeht.
+![Figure 5: Answer Relevancy and Faithfulness for "schwierig.json" dataset across different LLMs.](img/schwierig_generation.jpg)
 
-![Abbildung 2: Context Recall und Context Precision des Chatbots für das Dataset „einfach.json“ in Abhängigkeit vom benutzten Large Language Model.](img/einfach_retrieval.jpg)
 
-Auch bei den sogenannten Generation Metrics sind die Ergebnisse sehr ähnlich, wenn man nur das Dataset „einfach.json“ benutzt. Faithfulness lag zwischen 0.64 und 0.67, Answer Relevancy lag zwischen 0.75 und 0.84 (vgl. Abbildung 3).
+Overall, the models show more variable results for difficult questions, particularly in **Context Recall** and **Faithfulness**. Looking only at **Faithfulness**, which measures the factual correctness of answers, **gemma_latest**, **llama3_70b**, and **mistral_latest** performed significantly better than the other models. **mistral_latest** also achieved the best results in **Context Recall**, making it the best-performing LLM overall for the difficult dataset. However, to reliably determine that this model is the most suitable, the chatbot would need to be evaluated with a much larger dataset, which would exceed the scope of this internship.  
 
-![Abbildung 3: Answer Relevancy und Faithfulness des Chatbots für das Dataset „einfach.json“ in Abhängigkeit vom benutzten Large Language Model.](img/einfach_generation.jpg)
+Using the **unbekannt.json** dataset, it was shown that the model can recognize when a question touches on similar topics (e.g., "Internet security") but does not have relevant context to provide an answer. In such cases, the chatbot informed the user that it could not answer the question.  
 
-Bei den schwierigeren Fragen, wie sie im Dataset „schwierig.json“ vorkommen, zeigen die verschiedenen LLMs ebenfalls gewisse Ähnlichkeiten in ihren Ergebnissen, allerdings mit leicht unterschiedlichen Schwerpunkten. Context Recall lag je nach Modell zwischen 0.73 und 0.83 (vgl. Abbildung 4). Das Modell **mistral_latest** erzielte hierbei den höchsten Wert, während **gemma_latest** und **llama3_70b** deutlich niedrigere Werte aufwiesen. Context Precision war bei allen Modellen relativ ähnlich (zwischen 0.70 und 0.76).
+> **Note:** The **Answer Correctness** metric did not seem very meaningful, as the length of the answer had a strong influence on the score. Therefore, it was not included in the evaluation.  
 
-![Abbildung 4: Context Recall und Context Precision des Chatbots für das Dataset „schwierig.json“ in Abhängigkeit vom benutzten Large Language Model.](img/schwierig_retrieval.jpg)
+---
 
-Auch bei den sogenannten Generation Metrics gibt es Unterschiede. Die Faithfulness variiert zwischen 0.49 und 0.77 (vgl. Abbildung 5), wobei **gemma_latest** und **llama3_70b** sehr hohe Werte erzielten und **mixtral_latest** den niedrigsten. Die Answer Relevancy bewegt sich zwischen 0.75 und 0.84, wobei **mistral_latest** das beste Ergebnis zeigt.
+## Run Evaluation Pipeline  
 
-![Abbildung 5: Answer Relevancy und Faithfulness des Chatbots für das Dataset „schwierig.json“ in Abhängigkeit vom benutzten Large Language Model.](img/schwierig_generation.jpg)
+To successfully run the evaluation pipeline, ensure that the following prerequisites are met:  
 
-Insgesamt zeigen die Modelle bei schwierigen Fragen etwas variablere Ergebnisse, insbesondere bei Context Recall und Faithfulness. Betrachtet man nur Faithfulness, also die sachliche Korrektheit der Antworten, dann schneiden **gemma_latest**, **llama3_70b** und **mistral_latest** deutlich besser ab als die anderen Modelle. **mistral_latest** zeigte auch die besten Ergebnisse beim Context Recall, wodurch dieses LLM insgesamt die besten Ergebnisse beim schwierigen Dataset zeigte. Um zuverlässig sagen zu können, dass dieses Modell am besten geeignet ist, müsste man den Chatbot mit viel mehr (und viel größeren Datasets) evaluieren, was den Zeitrahmen des Praktikums sprengen würde.
+1. **VPN Connection:** Make sure an active VPN connection is established if required.  
+2. **Docker-Compose:** Verify that Docker and Docker-Compose are installed and running.  
+3. **Data Indexing:** Ensure that the data has already been indexed.  
 
-Mithilfe des Datasets „unbekannt.json“ konnte gezeigt werden, dass das Modell bei Fragen, die ähnliche Themen anschneiden, wie z. B. „Sicherheit im Internet“, erkennen kann, dass der Kontext keine Antwort auf die Frage bereitstellt. Der Chatbot antwortete dem Nutzer, dass er die Frage nicht beantworten kann.
-
-Anmerkung: Die Metrik Answer Correctness schien nicht sehr aussagekräftig zu sein, da die Länge der Antwort starken Einfluss auf den Score hatte. Deswegen wurde sie nicht in die Beurteilung miteinbezogen.
-
-### Evaluationspipeline ausführen
-
-Um die Evaluationspipeline erfolgreich auszuführen, stellen Sie sicher, dass die folgenden Voraussetzungen erfüllt sind:
-
-1. **VPN-Verbindung**: Stellen Sie sicher, dass eine aktive VPN-Verbindung besteht, falls erforderlich.
-2. **Docker-Compose**: Vergewissern Sie sich, dass Docker und Docker-Compose installiert und ausgeführt werden.
-3. **Datenindexierung**: Stellen Sie sicher, dass die Daten bereits indexiert wurden.
-
-Führen Sie anschließend die Evaluationspipeline mit dem folgenden Befehl aus:
+Then, run the evaluation pipeline using the following command:  
 
 ```bash
 python backend/evaluation.py
 ```
-
-Dieser Befehl startet die Evaluationspipeline und führt die notwendigen Schritte zur Bewertung der Chatbot-Performance durch.
